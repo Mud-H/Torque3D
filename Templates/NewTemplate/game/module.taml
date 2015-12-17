@@ -1,0 +1,8 @@
+<ModuleDefinition
+	ModuleId="Game"
+	VersionId="1"
+	Description="Default module for the game."
+	ScriptFile="scripts/Game.cs"
+	CreateFunction="create"
+	DestroyFunction="destroy">
+</ModuleDefinition>
