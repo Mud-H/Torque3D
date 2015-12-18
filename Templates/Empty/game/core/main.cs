@@ -28,6 +28,12 @@ $WORD::BITDEPTH = 3;
 $WORD::REFRESH = 4;
 $WORD::AA = 5;
 
+//Some default paths for GFX/Shaders
+$Core::MissingTexturePath = "core/art/missingTexture";
+$Core::UnAvailableTexturePath = "core/art/unavailable";
+$Core::WarningTexturePath = "core/art/missingTexture";
+$Core::ShaderPath = "shaders";
+
 //---------------------------------------------------------------------------------------------
 // CorePackage
 // Adds functionality for this mod to some standard functions.
