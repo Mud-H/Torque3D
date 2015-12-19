@@ -17,9 +17,12 @@ function initClient()
       exec( "data/scripts/client/prefs.cs" );
    else
       exec( "data/scripts/client/defaults.cs" );
-   
+      
    //Load UI stuff
-   //Profiles first
+   //we need to load this because some of the menu profiles use the sounds here
+   exec("data/scripts/datablocks/guiSounds.cs");
+   
+   //Profiles
    exec("data/scripts/gui/profiles.cs");
    
    //Now gui files

@@ -14,6 +14,8 @@ new GuiControlProfile( GuiMenuButtonProfile )
    canKeyFocus = false;
    bitmap = "data/art/gui/menu-button";
    hasBitmapArray = false;
+   soundButtonDown = menuButtonPressed;
+   soundButtonOver = menuButtonHover;
    category = "Core";
 };
 
@@ -52,6 +54,23 @@ new GuiControlProfile( GuiBlankMenuButtonProfile )
    canKeyFocus = false;
    bitmap = "data/art/gui/selector-button-blank";
    hasBitmapArray = false;
+   soundButtonDown = menuButtonPressed;
+   soundButtonOver = menuButtonHover;
+   category = "Core";
+};
+
+if( !isObject( GuiMenuTextProfile ) )
+new GuiControlProfile( GuiMenuTextProfile )
+{
+   opaque = true;
+   border = false;
+   fontSize = 18;
+   fontType = "Arial Bold";
+   fontColor = "240 240 240";
+   fontColorHL = "0 0 0";
+   fontColorNA = "125 125 125";
+   fixedExtent = false;
+   justify = "center";
    category = "Core";
 };
 

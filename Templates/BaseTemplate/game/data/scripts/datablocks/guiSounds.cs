@@ -20,5 +20,22 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// This is the default save location for any Datablocks created in the
-// Datablock Editor (this script is executed from onServerCreated())
+singleton SFXProfile(TestSound)
+{
+   fileName = "data/sound/cheetah_engine.ogg";
+   Description = "Audio2D";
+};
+
+singleton SFXProfile(menuButtonPressed)
+{
+   preload = "1";
+   description = "Audio2D";
+   fileName = "data/sound/ui/buttonClick";
+};
+
+singleton SFXProfile(menuButtonHover)
+{
+   preload = "1";
+   description = "Audio2D";
+   fileName = "data/sound/ui/buttonHover";
+};

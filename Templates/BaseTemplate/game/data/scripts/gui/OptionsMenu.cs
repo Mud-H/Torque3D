@@ -874,15 +874,6 @@ function AudioMenu::loadSettings(%this)
       SoundAPIGroup.clear();
    }
    
-   if(!isObject(SoundDeviceGroup))
-   {
-      new SimGroup( SoundDeviceGroup );
-   }
-   else
-   {
-      SoundDeviceGroup.clear();
-   }
-   
    %buffer = sfxGetAvailableDevices();
    %count = getRecordCount( %buffer );
    for (%i = 0; %i < %count; %i++)
@@ -898,23 +889,13 @@ function AudioMenu::loadSettings(%this)
          
          displayName = %provider;
          
-         key["$pref::SFX::API"] = %provider;
+         key["$pref::SFX::provider"] = %provider;
       };
       
       SoundAPIGroup.add(%setting);
-      
-      %setting = new ArrayObject()
-      {
-         class = "OptionsMenuSettingLevel";
-         caseSensitive = true;
-         
-         displayName = %device;
-         
-         key["$pref::SFX::Device"] = %device;
-      };
-      
-      SoundDeviceGroup.add(%setting);
    }
+   
+   %this.loadDevices();
    
    AudioMenuOptionsArray.clear();
    
@@ -933,32 +914,78 @@ function AudioMenu::loadSettings(%this)
    %option-->nameText.setText("Master Audio Volume");
    
    %option = OptionsMenu.addSliderOption(AudioMenuOptionsArray, "0.1 1", 8,
-      "$pref::SFX::channelVolume[AudioGui]", $pref::SFX::channelVolume[AudioGui]);
+      "$pref::SFX::channelVolume[" @ $GuiAudioType @ "]", $pref::SFX::channelVolume[$GuiAudioType]);
    %option-->nameText.setText("Gui Volume");
    
    %option = OptionsMenu.addSliderOption(AudioMenuOptionsArray, "0.1 1", 8, 
-      "$pref::SFX::channelVolume[AudioEffect]", $pref::SFX::channelVolume[AudioEffect]);
+      "$pref::SFX::channelVolume[" @ $SimAudioType @ "]", $pref::SFX::channelVolume[$SimAudioType]);
    %option-->nameText.setText("Effect Volume");
    
    %option = OptionsMenu.addSliderOption(AudioMenuOptionsArray, "0.1 1", 8, 
-      "$pref::SFX::channelVolume[AudioMusic]", $pref::SFX::channelVolume[AudioMusic]);
+      "$pref::SFX::channelVolume[" @ $MusicAudioType @ "]", $pref::SFX::channelVolume[$MusicAudioType]);
    %option-->nameText.setText("Music Volume");
    
    AudioMenuOptionsArray.refresh();
+}
+
+function AudioMenu::loadDevices(%this)
+{
+   if(!isObject(SoundDeviceGroup))
+   {
+      new SimGroup( SoundDeviceGroup );
+   }
+   else
+   {
+      SoundDeviceGroup.clear();
+   }
+   
+   %buffer = sfxGetAvailableDevices();
+   %count = getRecordCount( %buffer );
+   for (%i = 0; %i < %count; %i++)
+   {
+      %record = getRecord(%buffer, %i);
+      %provider = getField(%record, 0);
+      %device = getField(%record, 1);
+         
+      if($pref::SFX::provider !$= %provider)
+         continue;
+      
+      %setting = new ArrayObject()
+      {
+         class = "OptionsMenuSettingLevel";
+         caseSensitive = true;
+         
+         displayName = %device;
+         
+         key["$pref::SFX::Device"] = %device;
+      };
+      
+      SoundDeviceGroup.add(%setting);
+   }
 }
 
 function AudioMenu::apply(%this)
 {
    sfxSetMasterVolume( $pref::SFX::masterVolume );
    
-   sfxSetChannelVolume( AudioGui, $pref::SFX::channelVolume[ AudioGui ] );
-   sfxSetChannelVolume( AudioEffect, $pref::SFX::channelVolume[ AudioEffect ] );
-   sfxSetChannelVolume( AudioMusic, $pref::SFX::channelVolume[ AudioMusic ] );
+   sfxSetChannelVolume( AudioGui, $pref::SFX::channelVolume[ $GuiAudioType ] );
+   sfxSetChannelVolume( AudioEffect, $pref::SFX::channelVolume[ $SimAudioType ] );
+   sfxSetChannelVolume( AudioMusic, $pref::SFX::channelVolume[ $MusicAudioType ] );
+   
+   if ( !sfxCreateDevice(  $pref::SFX::provider, 
+                           $pref::SFX::device, 
+                           $pref::SFX::useHardware,
+                           -1 ) )                              
+      error( "Unable to create SFX device: " @ $pref::SFX::provider 
+                                             SPC $pref::SFX::device 
+                                             SPC $pref::SFX::useHardware );        
 
    if( !isObject( $AudioTestHandle ) )
    {
-      $AudioTestDescription.volume = %volume;
-      $AudioTestHandle = sfxPlayOnce( $AudioTestDescription, "data/art/sound/ui/volumeTest.wav" );
+      //$AudioTestHandle = sfxPlayOnce( Audio2D, "data/sound/cheetah_engine.ogg" );
+      
+      $maintheme1=sfxCreateSource(testSound);  
+      $maintheme1.play();
    }
 }
 

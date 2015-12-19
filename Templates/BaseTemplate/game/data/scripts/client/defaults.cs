@@ -127,9 +127,10 @@ $pref::SFX::channelVolume6 = 1;
 $pref::SFX::channelVolume7 = 1;
 $pref::SFX::channelVolume8 = 1;
 
-$pref::SFX::channelVolume[AudioGui] = 1;
-$pref::SFX::channelVolume[AudioEffect] = 1;
-$pref::SFX::channelVolume[AudioMusic] = 1;
+$pref::SFX::channelVolume[1] = 1;
+$pref::SFX::channelVolume[2] = 1;
+$pref::SFX::channelVolume[3] = 1;
+$pref::SFX::channelVolume[4] = 1;
 
 $pref::PostEffect::PreferedHDRFormat = "GFXFormatR8G8B8A8";
 
