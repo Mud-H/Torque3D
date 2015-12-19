@@ -3,7 +3,7 @@
 displaySplashWindow("data/art/splash.bmp");
 
 // Console does something.
-setLogMode(1);
+setLogMode(6);
 
 // Disable script trace.
 trace(false);
