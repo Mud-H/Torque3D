@@ -22,20 +22,21 @@
 
 singleton SFXProfile(TestSound)
 {
+   preload = true;
    fileName = "data/sound/cheetah_engine.ogg";
-   Description = "Audio2D";
+   Description = AudioGui;
 };
 
 singleton SFXProfile(menuButtonPressed)
 {
-   preload = "1";
-   description = "Audio2D";
+   preload = true;
+   description = AudioGui;
    fileName = "data/sound/ui/buttonClick";
 };
 
 singleton SFXProfile(menuButtonHover)
 {
-   preload = "1";
-   description = "Audio2D";
+   preload = true;
+   description = AudioGui;
    fileName = "data/sound/ui/buttonHover";
 };

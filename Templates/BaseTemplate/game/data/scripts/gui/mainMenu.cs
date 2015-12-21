@@ -1,9 +1,3 @@
-singleton SFXProfile(TestSound)
-{
-   fileName = "data/sound/cheetah_engine.ogg";
-   Description = "Audio2D";
-};
-
 function MainMenuGui::onWake(%this)
 {
    if (isFunction("getWebDeployment") &&

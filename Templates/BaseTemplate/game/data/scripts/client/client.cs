@@ -18,6 +18,9 @@ function initClient()
    else
       exec( "data/scripts/client/defaults.cs" );
       
+   // Start up the audio system.
+   sfxStartup();
+      
    //Load UI stuff
    //we need to load this because some of the menu profiles use the sounds here
    exec("data/scripts/datablocks/guiSounds.cs");

@@ -29,9 +29,6 @@ exec("core/console/main.cs");
 
 // Init the physics plugin.
 physicsInit();
-  
-// Start up the audio system.
-sfxStartup();
 
 // Set up networking.
 setNetPort(0);

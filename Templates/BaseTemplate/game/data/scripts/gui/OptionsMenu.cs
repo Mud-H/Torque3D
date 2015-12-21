@@ -968,9 +968,9 @@ function AudioMenu::apply(%this)
 {
    sfxSetMasterVolume( $pref::SFX::masterVolume );
    
-   sfxSetChannelVolume( AudioGui, $pref::SFX::channelVolume[ $GuiAudioType ] );
-   sfxSetChannelVolume( AudioEffect, $pref::SFX::channelVolume[ $SimAudioType ] );
-   sfxSetChannelVolume( AudioMusic, $pref::SFX::channelVolume[ $MusicAudioType ] );
+   sfxSetChannelVolume( $GuiAudioType, $pref::SFX::channelVolume[ $GuiAudioType ] );
+   sfxSetChannelVolume( $SimAudioType, $pref::SFX::channelVolume[ $SimAudioType ] );
+   sfxSetChannelVolume( $MusicAudioType, $pref::SFX::channelVolume[ $MusicAudioType ] );
    
    if ( !sfxCreateDevice(  $pref::SFX::provider, 
                            $pref::SFX::device, 
@@ -984,8 +984,9 @@ function AudioMenu::apply(%this)
    {
       //$AudioTestHandle = sfxPlayOnce( Audio2D, "data/sound/cheetah_engine.ogg" );
       
-      $maintheme1=sfxCreateSource(testSound);  
-      $maintheme1.play();
+      //sfxPlay(TestSound);
+      //$maintheme1=sfxCreateSource(testSound);  
+      //$maintheme1.play();
    }
 }
 
