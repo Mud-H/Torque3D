@@ -31,7 +31,7 @@ function mouseWheelScroll( %val )
    //calculateCameraSpeed();   
    //EditorGui-->CameraSpeedSpinner.setText( $Camera::movementSpeed );
 
-   %rollAdj = getMouseAdjustAmount(%val);
+   %rollAdj = getRollMouseAdjustAmount(%val);
    %rollAdj = mClamp(%rollAdj, -mPi()+0.01, mPi()-0.01);
    $mvRoll += %rollAdj;
 }

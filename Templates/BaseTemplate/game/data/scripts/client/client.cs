@@ -54,8 +54,11 @@ function initClient()
    exec("data/scripts/gui/pauseMenu.cs");
    
    //Keybinds and input scripts
-   exec("data/scripts/client/game/keybinds.cs");
+   exec("data/scripts/client/game/default.keybinds.cs");
    exec("data/scripts/client/game/inputCommands.cs");
+   
+   if (isFile("data/scripts/client/game/keybinds.cs"))
+      exec("data/scripts/client/game/keybinds.cs");
    
    //client system scripts
    exec("data/scripts/client/message.cs");

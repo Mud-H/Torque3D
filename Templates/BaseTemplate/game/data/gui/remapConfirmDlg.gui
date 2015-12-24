@@ -55,7 +55,7 @@
          canSaveDynamicFields = "0";
       };
       new GuiTextCtrl(RemapConfirmationText) {
-         text = "\"a\" is already bound to \"Strafe Left\"!\nDo you wish to replace this mapping?";
+         text = "\"m\" is already bound to \"Forward\"!\nDo you wish to replace this mapping?";
          maxLength = "255";
          margin = "0 0 0 0";
          padding = "0 0 0 0";
@@ -88,10 +88,10 @@
          minExtent = "8 8";
          horizSizing = "right";
          vertSizing = "top";
-         profile = "GuiButtonProfile";
+         profile = "GuiMenuButtonProfile";
          visible = "1";
          active = "1";
-         command = "eval(redoMapping(keyboard, \"a\", \"moveforward\", 2, 0);); Canvas.popDialog();";
+         command = "ControlsMenu.redoMapping(keyboard, \"m\", \"jump\", 0, 4); Canvas.popDialog();";
          accelerator = "return";
          tooltipProfile = "GuiToolTipProfile";
          hovertime = "1000";
@@ -109,7 +109,7 @@
          minExtent = "8 8";
          horizSizing = "right";
          vertSizing = "top";
-         profile = "GuiButtonProfile";
+         profile = "GuiMenuButtonProfile";
          visible = "1";
          active = "1";
          command = "Canvas.popDialog();";

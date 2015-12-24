@@ -87,6 +87,8 @@ function ControlsSettingsMenuButton::onClick(%this)
 {
     OptionsMain.hidden = true;
     ControlsMenu.hidden = false;
+    
+    ControlsMenu.reload();
 }
 
 function GraphicsSettingsMenuButton::onClick(%this)
@@ -984,7 +986,7 @@ function AudioMenu::apply(%this)
    {
       //$AudioTestHandle = sfxPlayOnce( Audio2D, "data/sound/cheetah_engine.ogg" );
       
-      //sfxPlay(TestSound);
+      sfxPlay(TestSound);
       //$maintheme1=sfxCreateSource(testSound);  
       //$maintheme1.play();
    }
@@ -1102,6 +1104,19 @@ function ControlsMenu::onWake(%this)
     %this.changeSettingsPage();
 }
 
+function ControlsMenuOKButton::onClick(%this)
+{
+    // write out the control config into the rw/config.cs file
+    moveMap.save( "data/scripts/client/game/keybinds.cs" );
+   
+    OptionsMenu.backOut();
+}
+
+function ControlsMenu::reload(%this)
+{
+   %this.changeSettingsPage();  
+}
+
 function ControlsMenu::changeSettingsPage(%this)
 {
     ControlsMenuOptionsArray.clear();
@@ -1135,6 +1150,7 @@ function ControlsMenu::changeSettingsPage(%this)
 
 function ControlsMenu::loadGroupKeybinds(%this, %keybindGroup)
 {
+   %optionIndex = 0;
    for(%i=0; %i < $RemapCount; %i++)
    {
       //find and add all the keybinds for the particular group we're looking at
@@ -1146,6 +1162,8 @@ function ControlsMenu::loadGroupKeybinds(%this, %keybindGroup)
          %option-->nameText.setText($RemapName[%i]);
          %option-->rebindButton.setText(%temp);
          %option-->rebindButton.keybindIndex = %i;
+         %option-->rebindButton.optionIndex = %optionIndex;
+         %optionIndex++;
       }
    }
 }
@@ -1173,12 +1191,27 @@ function ControlsMenu::getKeybindString(%this, %index )
    %count = getFieldCount( %temp );
    for ( %i = 0; %i < %count; %i += 2 )
    {
-      if ( %mapString !$= "" )
-         %mapString = %mapString @ ", ";
-
       %device = getField( %temp, %i + 0 );
       %object = getField( %temp, %i + 1 );
-      %mapString = %mapString @ %this.getMapDisplayName( %device, %object );
+      
+      %displayName = %this.getMapDisplayName( %device, %object );
+      
+      if(%displayName !$= "")
+      {
+         %tmpMapString = %this.getMapDisplayName( %device, %object );
+         
+         if(%mapString $= "")
+         {
+            %mapString = %tmpMapString;
+         }
+         else
+         {
+            if ( %tmpMapString !$= "")
+            {
+               %mapString = %mapString @ ", " @ %tmpMapString;
+            }
+         }
+      }
    }
 
    return %mapString; 
@@ -1248,7 +1281,7 @@ function ControlsMenu::getMapDisplayName( %this, %device, %action )
                case "dpov2":  %object = "POV2 down";
                case "lpov2":  %object = "POV2 left";
                case "rpov2":  %object = "POV2 right";
-               default:       %object = "??";
+               default:       %object = "";
             }
             return( %mods @ %object );
          }
@@ -1257,7 +1290,7 @@ function ControlsMenu::getMapDisplayName( %this, %device, %action )
       }
 	}
 		
-	return( "??" );		
+	return( "" );		
 }
 
 function ControlsMenu::buildFullMapString( %this, %index )
@@ -1308,10 +1341,11 @@ function ControlsMenu::doRemap( %this )
 
 function ControlsMenuRebindButton::onClick(%this)
 {
-   %name = $RemapName[%i];
+   %name = $RemapName[%this.keybindIndex];
    RemapDlg-->OptRemapText.setValue( "Re-bind \"" @ %name @ "\" to..." );
    
    OptRemapInputCtrl.index = %this.keybindIndex;
+   OptRemapInputCtrl.optionIndex = %this.optionIndex;
    Canvas.pushDialog( RemapDlg );
 }
 
@@ -1348,8 +1382,9 @@ function OptRemapInputCtrl::onInputEvent( %this, %device, %action )
       ControlsMenu.unbindExtraActions( %cmd, 1 );
       moveMap.bind( %device, %action, %cmd );
       
-      ControlsMenu.loadGroupKeybinds();
-      //ControlsMenu-->OptRemapList.setRowById( %this.index, ControlsMenu.buildFullMapString( %this.index ) );
+      //ControlsMenu.reload();
+      %newCommands = getField(ControlsMenu.buildFullMapString( %this.index ), 1);
+      ControlsMenuOptionsArray.getObject(%this.optionIndex)-->rebindButton.setText(%newCommands);
       return;
    }
 
@@ -1361,8 +1396,9 @@ function OptRemapInputCtrl::onInputEvent( %this, %device, %action )
       ControlsMenu.unbindExtraActions( %cmd, 0 );
       moveMap.bind( %device, %action, %cmd );
 
-      ControlsMenu.loadGroupKeybinds();
-      //ControlsMenu-->OptRemapList.setRowById( %this.index, ControlsMenu.buildFullMapString( %this.index ) );
+      //ControlsMenu.reload();
+      %newCommands = getField(ControlsMenu.buildFullMapString( %this.index ), 1);
+      ControlsMenuOptionsArray.getObject(%this.optionIndex)-->rebindButton.setText(%newCommands);
       return;   
    }
 
@@ -1388,7 +1424,7 @@ function OptRemapInputCtrl::onInputEvent( %this, %device, %action )
    Canvas.pushDialog( RemapConfirmDlg );
    
    RemapConfirmationText.setText("\"" @ %mapName @ "\" is already bound to \""
-      @ %prevCmdName @ "\"!\nDo you wish to replace this mapping?");
+      @ %prevCmdName @ "\"! Do you wish to replace this mapping?");
    RemapConfirmationYesButton.command = "ControlsMenu.redoMapping(" @ %device @ ", \"" @ %action @ "\", \"" @
                               %cmd @ "\", " @ %prevMapIndex @ ", " @ %this.index @ "); Canvas.popDialog();";
    RemapConfirmationNoButton.command = "Canvas.popDialog();";

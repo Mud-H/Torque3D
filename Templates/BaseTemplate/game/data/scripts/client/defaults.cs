@@ -18,6 +18,7 @@ $pref::Input::KeyboardTurnSpeed = 0.1;
 $pref::Input::invertVerticalMouse = false;
 $pref::Input::VertMouseSensitivity = 1;
 $pref::Input::HorzMouseSensitivity = 1;
+$pref::Input::RollMouseSensitivity = 1;
 $pref::Input::ZoomVertMouseSensitivity = 0.3;
 $pref::Input::ZoomHorzMouseSensitivity = 0.3;
 
