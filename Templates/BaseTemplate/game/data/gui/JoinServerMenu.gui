@@ -86,7 +86,7 @@
             fitParentWidth = "1";
             clipColumnText = "0";
             position = "1 1";
-            extent = "765 8";
+            extent = "762 8";
             minExtent = "8 8";
             horizSizing = "right";
             vertSizing = "bottom";
@@ -362,7 +362,7 @@
          profile = "GuiMenuButtonProfile";
          visible = "1";
          active = "1";
-         command = "Canvas.popDialog(ChooseLevelDlg);\n\nif(isObject(ChooseLevelDlg.returnGui) && ChooseLevelDlg.returnGui.isMethod(\"onReturnTo\"))    ChooseLevelDlg.returnGui.onReturnTo();";
+         command = "Canvas.popDialog(JoinServerMenu);\n\nif(isObject(JoinServerMenu.returnGui) && JoinServerMenu.returnGui.isMethod(\"onReturnTo\"))    JoinServerMenu.returnGui.onReturnTo();";
          accelerator = "escape";
          tooltipProfile = "GuiToolTipProfile";
          hovertime = "1000";
