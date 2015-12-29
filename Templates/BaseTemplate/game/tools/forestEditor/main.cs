@@ -94,8 +94,9 @@ function ForestEditorPlugin::onWorldEditorStartup( %this )
    new PersistenceManager( ForestDataManager );
    
    %brushPath = "tools/forestEditor/brushes.cs";
+   
    if ( !isFile( %brushPath ) )   
-      createPath( %brushPath );      
+      %successfulFile = createPath( %brushPath );      
       
    // This creates the ForestBrushGroup, all brushes, and elements.
    exec( %brushpath );         

@@ -45,8 +45,10 @@ function initClient()
    //Load gui companion scripts
    exec("data/scripts/gui/chooseLevelDlg.cs");
    exec("data/scripts/gui/messageBoxes.cs");
-   exec("data/scripts/gui/optionsList.cs");
-   exec("data/scripts/gui/optionsMenu.cs");
+   exec("data/scripts/gui/OptionsList.cs");
+   exec("data/scripts/gui/OptionsMenu.cs");
+   exec("data/scripts/gui/GraphicsMenu.cs");
+   exec("data/scripts/gui/ControlsMenu.cs");
    exec("data/scripts/gui/playGui.cs");
    exec("data/scripts/gui/chooseLevelDlg.cs");
    exec("data/scripts/gui/mainMenu.cs");

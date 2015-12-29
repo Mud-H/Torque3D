@@ -102,7 +102,8 @@ function clientCmdMissionStartPhase3(%seq,%missionName)
    StartFoliageReplication();
    
    // Load the static mission decals.
-   decalManagerLoad( %missionName @ ".decals" );
+   if(isFile(%missionName @ ".decals"))
+      decalManagerLoad( %missionName @ ".decals" );
    
    echo ("*** Phase 3: Mission Lighting");
    $MSeq = %seq;

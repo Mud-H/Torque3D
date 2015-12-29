@@ -22,6 +22,7 @@
 
 if ( isObject( moveMap ) )
    moveMap.delete();
+   
 new ActionMap(moveMap);
 
 //------------------------------------------------------------------------------

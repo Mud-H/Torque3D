@@ -1,4 +1,3 @@
-
 $pref::Player::Name = "Visitor";
 $pref::Player::defaultFov = 75;
 $pref::Player::zoomSpeed = 0;
@@ -66,7 +65,7 @@ $pref::lightManager = "";
 
 /// This is the default list of light managers ordered from
 /// most to least desirable for initialization.
-$lightManager::defaults = "Advanced Lighting" NL "Basic Lighting";
+$lightManager::defaults = "Advanced Lighting";
 
 /// A scale to apply to the camera view distance
 /// typically used for tuning performance.

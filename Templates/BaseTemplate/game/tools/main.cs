@@ -134,6 +134,11 @@ package Tools
       //$Scripts::ignoreDSOs = %toggle;
    }
    
+   function onStarted()
+   {
+      
+   }
+   
    function startToolTime(%tool)
    {
       if($toolDataToolCount $= "")
@@ -215,21 +220,18 @@ function fastLoadWorldEdit(%val)
 {
   if(%val)
   {
-     if(!$Tools::loaded){
-        canvas.pushDialog( EditorLoadingGui );
-        canvas.repaint();
-        
+     if(!$Tools::loaded)
+     {
         onStart();
-        
-        canvas.popDialog( EditorLoadingGui );
-        canvas.repaint();
      }
-        
      
      if(Canvas.getContent() == MainMenuGui.getId())
      {
         //startGame();
-        schedule(50, 0, "toggleEditor", true);
+         activatePackage( "BootEditor" );
+         ChooseLevelDlg.launchInEditor = false; 
+         StartGame("tools/levels/BlankRoom.mis", "SinglePlayer");
+         //schedule(50, 0, "toggleEditor", true);
      }
      else
      {        
@@ -242,15 +244,9 @@ function fastLoadGUIEdit(%val)
 {
   if(%val)
   {
-     //GlobalActionMap.unbind(keyboard, "f10");
-     if(!$Tools::loaded){
-        canvas.pushDialog( EditorLoadingGui );
-        canvas.repaint();
-        
-        schedule(0,0,"onStart");
-        
-        schedule(0,canvas, "popDialog", EditorLoadingGui );
-        //canvas.repaint();
+     if(!$Tools::loaded)
+     {
+        onStart();
      }
      
      toggleGuiEditor(true);

@@ -285,24 +285,3 @@
    };
 };
 //--- OBJECT WRITE END ---
-
-// Do this onMouseUp not via Command which occurs onMouseDown so we do
-// not have a lingering mouseUp event lingering in the ether.
-function ChooseLevelDlgGoBtn::onMouseUp( %this )
-{
-   // So we can't fire the button when loading is in progress.
-   if ( isObject( ServerGroup ) )
-      return;
-
-   // Launch the chosen level with the editor open?
-   if ( ChooseLevelDlg.launchInEditor )
-   {
-      activatePackage( "BootEditor" );
-      ChooseLevelDlg.launchInEditor = false; 
-      StartGame("", "SinglePlayer");
-   }
-   else
-   {
-      StartGame(); 
-   }
-}

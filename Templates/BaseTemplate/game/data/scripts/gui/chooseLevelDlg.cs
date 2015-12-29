@@ -277,48 +277,24 @@ function ChooseLevelWindow::nextPreviews(%this)
    }
 }
 
-//----------------------------------------
-function getLevelInfo( %missionFile ) 
+// Do this onMouseUp not via Command which occurs onMouseDown so we do
+// not have a lingering mouseUp event lingering in the ether.
+function ChooseLevelDlgGoBtn::onMouseUp( %this )
 {
-   clearLoadInfo();
-   
-   %file = new FileObject();
-   
-   %LevelInfoObject = "";
-   
-   if ( %file.openForRead( %missionFile ) ) {
-		%inInfoBlock = false;
-		
-		while ( !%file.isEOF() ) {
-			%line = %file.readLine();
-			%line = trim( %line );
-			
-			if( %line $= "new ScriptObject(LevelInfo) {" )
-				%inInfoBlock = true;
-         else if( %line $= "new LevelInfo(theLevelInfo) {" )
-				%inInfoBlock = true;
-			else if( %inInfoBlock && %line $= "};" ) {
-				%inInfoBlock = false;
-				%LevelInfoObject = %LevelInfoObject @ %line; 
-				break;
-			}
-			
-			if( %inInfoBlock )
-			   %LevelInfoObject = %LevelInfoObject @ %line @ " "; 	
-		}
-		
-		%file.close();
-	}
-   %file.delete();
+   // So we can't fire the button when loading is in progress.
+   if ( isObject( ServerGroup ) )
+      return;
 
-	if( %LevelInfoObject !$= "" )
-	{
-	   %LevelInfoObject = "%LevelInfoObject = " @ %LevelInfoObject;
-	   eval( %LevelInfoObject );
-
-      return %LevelInfoObject;
-	}
-	
-	// Didn't find our LevelInfo
-   return 0; 
+   // Launch the chosen level with the editor open?
+   if ( ChooseLevelDlg.launchInEditor )
+   {
+      activatePackage( "BootEditor" );
+      ChooseLevelDlg.launchInEditor = false; 
+      StartGame("", "SinglePlayer");
+   }
+   else
+   {
+      StartGame(); 
+   }
 }
+

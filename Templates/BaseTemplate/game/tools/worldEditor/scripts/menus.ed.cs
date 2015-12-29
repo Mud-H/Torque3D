@@ -244,9 +244,9 @@ function EditorGui::buildMenus(%this)
 
       barTitle = "Lighting";
          
-      item[0] = "Full Relight" TAB "Alt L" TAB "Editor.lightScene(\"\", forceAlways);";
-      item[1] = "Toggle ShadowViz" TAB "" TAB "toggleShadowViz();";
-      item[2] = "-";
+      //item[0] = "Full Relight" TAB "Alt L" TAB "Editor.lightScene(\"\", forceAlways);";
+      item[0] = "Toggle ShadowViz" TAB "" TAB "toggleShadowViz();";
+      item[1] = "-";
          
          // NOTE: The light managers will be inserted as the
          // last menu items in EditorLightingMenu::onAdd().
