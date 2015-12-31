@@ -1,0 +1,32 @@
+<TorsionProject>
+<Name>NewTemplate</Name>
+<WorkingDir/>
+<EntryScript>main.cs</EntryScript>
+<DebugHook>dbgSetParameters( #port#, "#password#", true );</DebugHook>
+<Mods/>
+<ScannerExts>cs; gui; taml; module</ScannerExts>
+<Configs>
+<Config>
+<Name>NewTemplate</Name>
+<Executable>NewTemplate.exe</Executable>
+<Arguments/>
+<HasExports>true</HasExports>
+<Precompile>true</Precompile>
+<InjectDebugger>true</InjectDebugger>
+<UseSetModPaths>false</UseSetModPaths>
+</Config>
+<Config>
+<Name>dedicated</Name>
+<Executable>NewTemplate.exe</Executable>
+<Arguments>-dedicated -mission levels/Empty_Room.mis</Arguments>
+<HasExports>true</HasExports>
+<Precompile>true</Precompile>
+<InjectDebugger>true</InjectDebugger>
+<UseSetModPaths>false</UseSetModPaths>
+</Config>
+</Configs>
+<SearchURL/>
+<SearchProduct>TGE</SearchProduct>
+<SearchVersion>HEAD</SearchVersion>
+<ExecModifiedScripts>true</ExecModifiedScripts>
+</TorsionProject>
