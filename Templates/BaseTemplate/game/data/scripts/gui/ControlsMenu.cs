@@ -127,7 +127,7 @@ function ControlsMenu::loadGroupKeybinds(%this, %keybindGroup)
 
 function ControlsMenu::addKeybindOption(%this)
 {
-    %graphicsOption = OptionsMenu.tamlReader.read("data/gui/ControlsMenuSetting.taml");
+    %graphicsOption = OptionsMenu.tamlReader.read("data/scripts/gui/controlsMenuSetting.taml");
 
     ControlsMenuOptionsArray.add(%graphicsOption);
 

@@ -44,11 +44,11 @@ singleton GFXStateBlockData( MLAA_EdgeDetectStateBlock : PFX_DefaultStateBlock )
 
 singleton ShaderData( MLAA_EdgeDetectionShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/mlaa/offsetV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/mlaa/edgeDetectionP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/mlaa/offsetV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/mlaa/edgeDetectionP.hlsl";
 
-   OGLVertexShaderFile  = "data/shaders/common/postFx/mlaa/gl/offsetV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/mlaa/gl/edgeDetectionP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/mlaa/gl/offsetV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/mlaa/gl/edgeDetectionP.glsl";
 
    samplerNames[0] = "$colorMapG";
    samplerNames[1] = "$prepassMap";
@@ -73,11 +73,11 @@ singleton GFXStateBlockData( MLAA_BlendWeightCalculationStateBlock : PFX_Default
 
 singleton ShaderData( MLAA_BlendWeightCalculationShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/mlaa/passthruV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/mlaa/blendWeightCalculationP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/mlaa/passthruV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/mlaa/blendWeightCalculationP.hlsl";
 
-   OGLVertexShaderFile  = "data/shaders/common/postFx/mlaa/gl/passthruV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/mlaa/gl/blendWeightCalculationP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/mlaa/gl/passthruV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/mlaa/gl/blendWeightCalculationP.glsl";
 
    samplerNames[0] = "$edgesMap";
    samplerNames[1] = "$edgesMapL";
@@ -103,11 +103,11 @@ singleton GFXStateBlockData( MLAA_NeighborhoodBlendingStateBlock : PFX_DefaultSt
 
 singleton ShaderData( MLAA_NeighborhoodBlendingShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/mlaa/offsetV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/mlaa/neighborhoodBlendingP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFx/mlaa/offsetV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFx/mlaa/neighborhoodBlendingP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/mlaa/gl/offsetV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/mlaa/gl/neighborhoodBlendingP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFx/mlaa/gl/offsetV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/postFx/mlaa/gl/neighborhoodBlendingP.glsl";
 
    samplerNames[0] = "$blendMap";
    samplerNames[1] = "$colorMapL";
@@ -162,7 +162,7 @@ singleton PostEffect( MLAAFx )
 
       texture[0] = "$inTex"; // Edges mask    
       texture[1] = "$inTex"; // Edges mask 
-      texture[2] = "AreaMap33.dds";
+      texture[2] = "data/art/postFx/AreaMap33.dds";
    };
 
    new PostEffect()

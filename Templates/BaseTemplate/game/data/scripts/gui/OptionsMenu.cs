@@ -144,7 +144,7 @@ function OptionsMenu::backOut(%this)
 
 function OptionsMenu::addSettingOption(%this, %arrayTarget)
 {
-    %graphicsOption = OptionsMenu.tamlReader.read("data/gui/GraphicsMenuSettingsCtrl.taml");
+    %graphicsOption = OptionsMenu.tamlReader.read("data/scripts/gui/graphicsMenuSettingsCtrl.taml");
 
     %arrayTarget.add(%graphicsOption);
 
@@ -153,7 +153,7 @@ function OptionsMenu::addSettingOption(%this, %arrayTarget)
 
 function OptionsMenu::addSliderOption(%this, %arrayTarget, %range, %ticks, %variable, %value, %class)
 {
-    %graphicsOption = OptionsMenu.tamlReader.read("data/gui/GraphicsMenuSettingsSlider.taml");
+    %graphicsOption = OptionsMenu.tamlReader.read("data/scripts/gui/graphicsMenuSettingsSlider.taml");
 
     %arrayTarget.add(%graphicsOption);
     

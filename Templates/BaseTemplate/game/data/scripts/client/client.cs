@@ -29,26 +29,26 @@ function initClient()
    exec("data/scripts/gui/profiles.cs");
    
    //Now gui files
-   exec("data/gui/mainMenu.gui");
-   exec("data/gui/chooseLevelDlg.gui");
-   exec("data/gui/joinServerMenu.gui");
-   exec("data/gui/loadingGui.gui");
-   exec("data/gui/messageBoxYesNo.gui");
-   exec("data/gui/optionsMenu.gui");
-   exec("data/gui/playGui.gui");
-   exec("data/gui/pauseMenu.gui");
-   exec("data/gui/remapDlg.gui");
-   exec("data/gui/remapConfirmDlg.gui");
+   exec("data/scripts/gui/mainMenu.gui");
+   exec("data/scripts/gui/chooseLevelDlg.gui");
+   exec("data/scripts/gui/joinServerMenu.gui");
+   exec("data/scripts/gui/loadingGui.gui");
+   //exec("data/scripts/gui/messageBoxYesNo.gui");
+   exec("data/scripts/gui/optionsMenu.gui");
+   exec("data/scripts/gui/playGui.gui");
+   exec("data/scripts/gui/pauseMenu.gui");
+   exec("data/scripts/gui/remapDlg.gui");
+   exec("data/scripts/gui/remapConfirmDlg.gui");
    
-   exec("data/gui/profiler.gui");
+   exec("data/scripts/gui/profiler.gui");
    
    //Load gui companion scripts
    exec("data/scripts/gui/chooseLevelDlg.cs");
-   exec("data/scripts/gui/messageBoxes.cs");
-   exec("data/scripts/gui/OptionsList.cs");
-   exec("data/scripts/gui/OptionsMenu.cs");
-   exec("data/scripts/gui/GraphicsMenu.cs");
-   exec("data/scripts/gui/ControlsMenu.cs");
+   //exec("data/scripts/gui/messageBoxes.cs");
+   exec("data/scripts/gui/optionsList.cs");
+   exec("data/scripts/gui/optionsMenu.cs");
+   exec("data/scripts/gui/graphicsMenu.cs");
+   exec("data/scripts/gui/controlsMenu.cs");
    exec("data/scripts/gui/playGui.cs");
    exec("data/scripts/gui/chooseLevelDlg.cs");
    exec("data/scripts/gui/mainMenu.cs");
@@ -69,18 +69,18 @@ function initClient()
    exec("data/scripts/client/connectionToServer.cs");
    
    // Initialize the post effect manager.
-   exec("core/postFx/postFXManager.gui");
-   exec("core/postFx/postFXManager.gui.cs");
-   exec("core/postFx/postFXManager.gui.settings.cs");
-   exec("core/postFx/postFXManager.persistance.cs");
+   exec("data/scripts/gui/postFxManager.gui");
+   exec("data/scripts/client/postFx/postFxManager.gui.cs");
+   exec("data/scripts/client/postFx/postFxManager.gui.settings.cs");
+   exec("data/scripts/client/postFx/postFxManager.persistance.cs");
    
    // Initialize any game-specific postFX here
-   exec("data/scripts/client/postfx/chromaticLens.cs");
-   exec("data/scripts/client/postfx/dof.cs");
-   exec("data/scripts/client/postfx/flash.cs");
-   exec("data/scripts/client/postfx/lightRay.cs");
-   exec("data/scripts/client/postfx/MotionBlurFx.cs");
-   exec("data/scripts/client/postfx/vignette.cs");
+   exec("data/scripts/client/postFx/chromaticLens.cs");
+   exec("data/scripts/client/postFx/dof.cs");
+   exec("data/scripts/client/postFx/flash.cs");
+   exec("data/scripts/client/postFx/lightRay.cs");
+   exec("data/scripts/client/postFx/MotionBlurFx.cs");
+   exec("data/scripts/client/postFx/vignette.cs");
    
    //Autodetect settings if it's our first time
    if($pref::Video::autoDetect)
@@ -116,7 +116,7 @@ function initClient()
    else 
    {
       // Otherwise go to the splash screen.
-      Canvas.setCursor(DefaultCursor);
+      //Canvas.setCursor(DefaultCursor);
       Canvas.pushDialog(MainMenuGui);
    }   
 }

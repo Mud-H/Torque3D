@@ -20,45 +20,51 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// An implementation of "NVIDIA FXAA 3.11" by TIMOTHY LOTTES
-//
-// http://timothylottes.blogspot.com/
-//
-// The shader is tuned for the defaul quality and good performance.
-// See shaders\common\postFx\fxaa\fxaaP.hlsl to tweak the internal
-// quality and performance settings.
-
-singleton GFXStateBlockData( FXAA_StateBlock : PFX_DefaultStateBlock )
-{   
-   samplersDefined = true;   
-   samplerStates[0] = SamplerClampLinear;
-};
-
-singleton ShaderData( FXAA_ShaderData )
-{   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/fxaa/fxaaV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/fxaa/fxaaP.hlsl";
-   
-   OGLVertexShaderFile  = "data/shaders/common/postFx/fxaa/gl/fxaaV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/fxaa/gl/fxaaP.glsl";
-   
-   samplerNames[0] = "$colorTex";
-
-   pixVersion = 3.0;
-};
-
-singleton PostEffect( FXAA_PostEffect )
+singleton ShaderData( GammaShader )
 {
-   isEnabled = false;
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/gammaP.hlsl";
+
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/gl/gammaP.glsl";
    
-   allowReflectPass = false;
-   renderTime = "PFXAfterDiffuse";
+   samplerNames[0] = "$backBuffer";
+   samplerNames[1] = "$colorCorrectionTex";
 
-   texture[0] = "$backBuffer";      
-
-   target = "$backBuffer";
-
-   stateBlock = FXAA_StateBlock;
-   shader = FXAA_ShaderData;
+   pixVersion = 2.0;   
 };
 
+singleton GFXStateBlockData( GammaStateBlock : PFX_DefaultStateBlock )
+{
+   samplersDefined = true;
+   samplerStates[0] = SamplerClampLinear;
+   samplerStates[1] = SamplerClampLinear; 
+};
+
+singleton PostEffect( GammaPostFX )
+{
+   isEnabled = true;
+   allowReflectPass = false;
+   
+   renderTime = "PFXBeforeBin";
+   renderBin = "EditorBin";
+   renderPriority = 9999;
+      
+   shader = GammaShader;
+   stateBlock = GammaStateBlock;
+   
+   texture[0] = "$backBuffer";  
+   texture[1] = $HDRPostFX::colorCorrectionRamp;  
+};
+
+function GammaPostFX::preProcess( %this )
+{
+   if ( %this.texture[1] !$= $HDRPostFX::colorCorrectionRamp )
+      %this.setTexture( 1, $HDRPostFX::colorCorrectionRamp );         
+}
+
+function GammaPostFX::setShaderConsts( %this )
+{
+   %clampedGamma  = mClamp( $pref::Video::Gamma, 0.001, 2.2);
+   %this.setShaderConst( "$OneOverGamma", 1 / %clampedGamma );
+}

@@ -35,11 +35,11 @@ singleton GFXStateBlockData( PFX_CausticsStateBlock : PFX_DefaultStateBlock )
 
 singleton ShaderData( PFX_CausticsShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/caustics/causticsP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/caustics/causticsP.hlsl";
          
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl//postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/caustics/gl/causticsP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/caustics/gl/causticsP.glsl";
       
    samplerNames[0] = "$prepassTex";
    samplerNames[1] = "$causticsTex0";
@@ -58,7 +58,7 @@ singleton PostEffect( CausticsPFX )
    shader = PFX_CausticsShader;
    stateBlock = PFX_CausticsStateBlock;
    texture[0] = "#prepass";
-   texture[1] = "textures/caustics_1";
-   texture[2] = "textures/caustics_2";
+   texture[1] = "data/art/postFx/caustics_1";
+   texture[2] = "data/art/postFx/caustics_2";
    target = "$backBuffer";
 };

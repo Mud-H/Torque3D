@@ -70,4 +70,4 @@ $PostFXManager::Settings::SSAO::sNormalPow = "1";
 $PostFXManager::Settings::SSAO::sNormalTol = "0";
 $PostFXManager::Settings::SSAO::sRadius = "0.1";
 $PostFXManager::Settings::SSAO::sStrength = "6";
-$PostFXManager::Settings::ColorCorrectionRamp = "core/postFx/null_color_ramp.png";
+$PostFXManager::Settings::ColorCorrectionRamp = "data/art/postFx/null_color_ramp.png";

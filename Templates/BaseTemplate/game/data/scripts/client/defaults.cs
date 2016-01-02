@@ -56,7 +56,7 @@ $pref::Video::Gamma = 1.0;
 /// This is the path used by ShaderGen to cache procedural
 /// shaders.  If left blank ShaderGen will only cache shaders
 /// to memory and not to disk.
-$shaderGen::cachePath = "data/shaders/procedural";
+$shaderGen::cachePath = "data/shaders";
 
 /// The perfered light manager to use at startup.  If blank
 /// or if the selected one doesn't work on this platfom it

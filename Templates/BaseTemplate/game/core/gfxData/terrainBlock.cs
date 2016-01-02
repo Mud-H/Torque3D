@@ -23,11 +23,11 @@
 /// Used when generating the blended base texture.
 singleton ShaderData( TerrainBlendShader )
 {
-   DXVertexShaderFile   = "data/shaders/common/terrain/blendV.hlsl";
-   DXPixelShaderFile    = "data/shaders/common/terrain/blendP.hlsl";
+   DXVertexShaderFile   = $Core::CommonShaderPath @ "/terrain/blendV.hlsl";
+   DXPixelShaderFile    = $Core::CommonShaderPath @ "/terrain/blendP.hlsl";
    
-   OGLVertexShaderFile = "data/shaders/common/terrain/gl/blendV.glsl";
-   OGLPixelShaderFile = "data/shaders/common/terrain/gl/blendP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/terrain/gl/blendV.glsl";
+   OGLPixelShaderFile = $Core::CommonShaderPath @ "/terrain/gl/blendP.glsl";
    
    samplerNames[0] = "layerTex";
    samplerNames[1] = "textureMap";

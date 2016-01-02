@@ -38,11 +38,11 @@ new GFXStateBlockData( ScatterSkySBData )
 
 singleton ShaderData( ScatterSkyShaderData )
 {
-   DXVertexShaderFile     = "data/shaders/common/scatterSkyV.hlsl";
-   DXPixelShaderFile      = "data/shaders/common/scatterSkyP.hlsl";   
+   DXVertexShaderFile     = $Core::CommonShaderPath @ "/scatterSkyV.hlsl";
+   DXPixelShaderFile      = $Core::CommonShaderPath @ "/scatterSkyP.hlsl";   
    
-   OGLVertexShaderFile     = "data/shaders/common/gl/scatterSkyV.glsl";
-   OGLPixelShaderFile      = "data/shaders/common/gl/scatterSkyP.glsl";   
+   OGLVertexShaderFile     = $Core::CommonShaderPath @ "/gl/scatterSkyV.glsl";
+   OGLPixelShaderFile      = $Core::CommonShaderPath @ "/gl/scatterSkyP.glsl";   
    
    samplerNames[0] = "$nightSky";
    

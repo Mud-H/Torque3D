@@ -34,11 +34,11 @@ singleton GFXStateBlockData( PFX_DefaultEdgeAAStateBlock )
 
 singleton ShaderData( PFX_EdgeAADetectShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/edgeaa/edgeDetectP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/edgeaa/edgeDetectP.hlsl";
          
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/edgeaa/gl/edgeDetectP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/edgeaa/gl/edgeDetectP.glsl";
       
    samplerNames[0] = "$prepassBuffer";
    
@@ -47,11 +47,11 @@ singleton ShaderData( PFX_EdgeAADetectShader )
 
 singleton ShaderData( PFX_EdgeAAShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/edgeaa/edgeAAV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/edgeaa/edgeAAP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/edgeaa/edgeAAV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/edgeaa/edgeAAP.hlsl";
          
-   OGLVertexShaderFile  = "data/shaders/common/postFx/edgeaa/gl/edgeAAV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/edgeaa/gl/edgeAAP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/edgeaa/gl/edgeAAV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/edgeaa/gl/edgeAAP.glsl";
       
    samplerNames[0] = "$edgeBuffer";
    samplerNames[1] = "$backBuffer";
@@ -61,11 +61,11 @@ singleton ShaderData( PFX_EdgeAAShader )
 
 singleton ShaderData( PFX_EdgeAADebugShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/edgeaa/dbgEdgeDisplayP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/edgeaa/dbgEdgeDisplayP.hlsl";
          
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/edgeaa/gl/dbgEdgeDisplayP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/edgeaa/gl/dbgEdgeDisplayP.glsl";
       
    samplerNames[0] = "$edgeBuffer";
    

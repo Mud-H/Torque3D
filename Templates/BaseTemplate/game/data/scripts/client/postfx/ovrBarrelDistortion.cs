@@ -30,11 +30,11 @@ if(!isFunction(isOculusVRDeviceActive))
 
 singleton ShaderData( OVRMonoToStereoShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/oculusvr/monoToStereoP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/oculusvr/monoToStereoP.hlsl";
    
-   //OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.hlsl";
-   //OGLPixelShaderFile   = "data/shaders/common/postFx/oculusvr/gl/monoToStereoP.glsl";
+   //OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/gl/postFxV.hlsl";
+   //OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/oculusvr/gl/monoToStereoP.glsl";
    
    samplerNames[0] = "$backBuffer";
 
@@ -43,11 +43,11 @@ singleton ShaderData( OVRMonoToStereoShader )
 
 singleton ShaderData( OVRBarrelDistortionShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/oculusvr/barrelDistortionP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/oculusvr/barrelDistortionP.hlsl";
    
-   //OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   //OGLPixelShaderFile   = "data/shaders/common/postFx/oculusvr/gl/barrelDistortionP.glsl";
+   //OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/gl/postFxV.glsl";
+   //OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/oculusvr/gl/barrelDistortionP.glsl";
    
    samplerNames[0] = "$backBuffer";
 
@@ -56,8 +56,8 @@ singleton ShaderData( OVRBarrelDistortionShader )
 
 singleton ShaderData( OVRBarrelDistortionChromaShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/oculusvr/barrelDistortionChromaP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/oculusvr/barrelDistortionChromaP.hlsl";
 
    pixVersion = 2.0;   
 };

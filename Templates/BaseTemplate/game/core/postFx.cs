@@ -22,11 +22,11 @@
 
 singleton ShaderData( PFX_PassthruShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/passthruP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/passthruP.hlsl";
          
-//   OGLVertexShaderFile  = "data/shaders/common/postFx/gl//postFxV.glsl";
-//   OGLPixelShaderFile   = "data/shaders/common/postFx/gl/passthruP.glsl";
+//   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+//   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/gl/passthruP.glsl";
       
    samplerNames[0] = "$inputTex";
    
@@ -38,12 +38,12 @@ function initPostEffects()
    // First exec the scripts for the different light managers
    // in the lighting folder.
    
-   %pattern = "./postFx/*.cs";   
+   %pattern = "data/scripts/client/postFx/*.cs";   
    %file = findFirstFile( %pattern );
    if ( %file $= "" )
    {
       // Try for DSOs next.
-      %pattern = "./postFx/*.cs.dso";
+      %pattern = "data/scripts/client/postFx/*.cs.dso";
       %file = findFirstFile( %pattern );
    }
    

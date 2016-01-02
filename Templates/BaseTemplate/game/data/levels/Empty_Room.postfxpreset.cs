@@ -1,4 +1,4 @@
-$PostFXManager::Settings::ColorCorrectionRamp = "core/postFx/null_color_ramp.png";
+$PostFXManager::Settings::ColorCorrectionRamp = "data/art/postFx/null_color_ramp.png";
 $PostFXManager::Settings::DOF::BlurCurveFar = "";
 $PostFXManager::Settings::DOF::BlurCurveNear = "";
 $PostFXManager::Settings::DOF::BlurMax = "";
@@ -10,7 +10,7 @@ $PostFXManager::Settings::DOF::FocusRangeMin = "";
 $PostFXManager::Settings::EnableDOF = "1";
 $PostFXManager::Settings::EnableSSAO = "1";
 $PostFXManager::Settings::EnableHDR = "1";
-$PostFXManager::Settings::EnableLightRays = "1";
+$PostFXManager::Settings::EnableLightRays = "0";
 $PostFXManager::Settings::EnablePostFX = "1";
 $PostFXManager::Settings::EnableVignette = "1";
 $PostFXManager::Settings::HDR::adaptRate = "2";

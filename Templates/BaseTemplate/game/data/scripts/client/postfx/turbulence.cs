@@ -20,51 +20,38 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-singleton ShaderData( GammaShader )
-{
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/gammaP.hlsl";
-
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/gl/gammaP.glsl";
-   
-   samplerNames[0] = "$backBuffer";
-   samplerNames[1] = "$colorCorrectionTex";
-
-   pixVersion = 2.0;   
-};
-
-singleton GFXStateBlockData( GammaStateBlock : PFX_DefaultStateBlock )
-{
-   samplersDefined = true;
+singleton GFXStateBlockData( PFX_TurbulenceStateBlock : PFX_DefaultStateBlock)  
+{  
+   zDefined = false;
+   zEnable = false;  
+   zWriteEnable = false;  
+        
+   samplersDefined = true;  
    samplerStates[0] = SamplerClampLinear;
-   samplerStates[1] = SamplerClampLinear; 
+};  
+  
+singleton ShaderData( PFX_TurbulenceShader )
+{   
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/turbulenceP.hlsl";
+           
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/gl/turbulenceP.glsl";
+           
+   samplerNames[0] = "$inputTex";
+   pixVersion = 3.0;
 };
 
-singleton PostEffect( GammaPostFX )
-{
-   isEnabled = true;
-   allowReflectPass = false;
-   
-   renderTime = "PFXBeforeBin";
-   renderBin = "EditorBin";
-   renderPriority = 9999;
-      
-   shader = GammaShader;
-   stateBlock = GammaStateBlock;
-   
-   texture[0] = "$backBuffer";  
-   texture[1] = $HDRPostFX::colorCorrectionRamp;  
-};
-
-function GammaPostFX::preProcess( %this )
-{
-   if ( %this.texture[1] !$= $HDRPostFX::colorCorrectionRamp )
-      %this.setTexture( 1, $HDRPostFX::colorCorrectionRamp );         
-}
-
-function GammaPostFX::setShaderConsts( %this )
-{
-   %clampedGamma  = mClamp( $pref::Video::Gamma, 0.001, 2.2);
-   %this.setShaderConst( "$OneOverGamma", 1 / %clampedGamma );
-}
+singleton PostEffect( TurbulenceFx )  
+{  
+   isEnabled = false;    
+   allowReflectPass = true;  
+         
+   renderTime = "PFXAfterBin";
+   renderBin = "GlowBin";
+   renderPriority = 0.5; // Render after the glows themselves
+     
+   shader = PFX_TurbulenceShader;  
+   stateBlock=PFX_TurbulenceStateBlock;
+   texture[0] = "$backBuffer";      
+ };

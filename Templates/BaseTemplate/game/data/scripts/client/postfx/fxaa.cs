@@ -20,38 +20,45 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-singleton GFXStateBlockData( PFX_TurbulenceStateBlock : PFX_DefaultStateBlock)  
-{  
-   zDefined = false;
-   zEnable = false;  
-   zWriteEnable = false;  
-        
-   samplersDefined = true;  
-   samplerStates[0] = SamplerClampLinear;
-};  
-  
-singleton ShaderData( PFX_TurbulenceShader )
+// An implementation of "NVIDIA FXAA 3.11" by TIMOTHY LOTTES
+//
+// http://timothylottes.blogspot.com/
+//
+// The shader is tuned for the defaul quality and good performance.
+// See shaders\common\postFx\fxaa\fxaaP.hlsl to tweak the internal
+// quality and performance settings.
+
+singleton GFXStateBlockData( FXAA_StateBlock : PFX_DefaultStateBlock )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/turbulenceP.hlsl";
-           
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/gl/turbulenceP.glsl";
-           
-   samplerNames[0] = "$inputTex";
+   samplersDefined = true;   
+   samplerStates[0] = SamplerClampLinear;
+};
+
+singleton ShaderData( FXAA_ShaderData )
+{   
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/fxaa/fxaaV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/fxaa/fxaaP.hlsl";
+   
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/fxaa/gl/fxaaV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/fxaa/gl/fxaaP.glsl";
+   
+   samplerNames[0] = "$colorTex";
+
    pixVersion = 3.0;
 };
 
-singleton PostEffect( TurbulenceFx )  
-{  
-   isEnabled = false;    
-   allowReflectPass = true;  
-         
-   renderTime = "PFXAfterBin";
-   renderBin = "GlowBin";
-   renderPriority = 0.5; // Render after the glows themselves
-     
-   shader = PFX_TurbulenceShader;  
-   stateBlock=PFX_TurbulenceStateBlock;
+singleton PostEffect( FXAA_PostEffect )
+{
+   isEnabled = false;
+   
+   allowReflectPass = false;
+   renderTime = "PFXAfterDiffuse";
+
    texture[0] = "$backBuffer";      
- };
+
+   target = "$backBuffer";
+
+   stateBlock = FXAA_StateBlock;
+   shader = FXAA_ShaderData;
+};
+

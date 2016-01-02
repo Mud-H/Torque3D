@@ -437,7 +437,7 @@ function ppColorCorrection_selectFile()
 function ppColorCorrection_selectFileHandler( %filename )
 {
    if ( %filename $= "" || !isFile( %filename ) )
-      %filename = "core/postFx/null_color_ramp.png";
+      %filename = "data/art/postFx/null_color_ramp.png";
    else
       %filename = makeRelativePath( %filename, getMainDotCsDir() );
             

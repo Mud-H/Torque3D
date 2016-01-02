@@ -25,11 +25,11 @@ $VignettePostEffect::VMin = 0.2;
 
 singleton ShaderData( VignetteShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/vignette/VignetteP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/vignette/VignetteP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl//postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/vignette/gl/VignetteP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/vignette/gl/VignetteP.glsl";
    
    samplerNames[0] = "$backBuffer";
    
