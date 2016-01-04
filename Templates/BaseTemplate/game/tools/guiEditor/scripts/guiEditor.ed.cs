@@ -129,6 +129,8 @@ function GuiEditor::openForEditing( %this, %content )
 
    %this.setContentControl(%content);
    
+   %contentOriginalExtent = %content.extent;
+   
    // Initialize the preview resolution list and select the current
    // preview resolution.
 
@@ -145,8 +147,10 @@ function GuiEditor::openForEditing( %this, %content )
    GuiEditorTreeView.open( %content );
    GuiEditorTreeView.expandItem( 1 );
    
-   // Initialize profiles tree.
+   //set back to the original extent, just to be sure
+   %content.extent = %contentOriginalExtent;
    
+   // Initialize profiles tree.
    if( !GuiEditorProfilesTree.isInitialized )
    {
       GuiEditorProfilesTree.init();
