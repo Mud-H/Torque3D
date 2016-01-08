@@ -27,6 +27,8 @@ BrushEditorTool::BrushEditorTool()
    mBrushObjHL = NULL;
    mBrushHL = -1;
    mFaceHL = -1;
+
+   mSelectionMode = SelectMode::Brush;
 }
 
 bool BrushEditorTool::onAdd()
@@ -111,6 +113,11 @@ bool BrushEditorTool::onMouseMove(const Gui3DMouseEvent &e)
       mFaceHL = -1;
    }
 
+   if (!mSelectedBrushes.empty() || !mSelectedFaces.empty())
+   {
+      mWorldEditor->getGizmo()->on3DMouseMove(e);
+   }
+
    /*if (!mConvexSEL)
    {
       mConvexHL = hitShape;
@@ -148,11 +155,26 @@ bool BrushEditorTool::onMouseDown(const Gui3DMouseEvent &e)
    if (!mUseMouseDown)
       return false;
 
-   /*mWorldEditor->mouseLock();
+   mWorldEditor->mouseLock();
 
    mMouseDown = true;
 
-   if (e.modifier & SI_ALT)
+   if (mBrushHL != -1)
+   {
+      BrushSelection brshSel;
+      brshSel.brushObj = mBrushObjHL;
+      brshSel.brush = mBrushHL;
+
+      mSelectedBrushes.push_back(brshSel);
+   }
+   else
+   {
+      mSelectedBrushes.clear();
+   }
+
+   mWorldEditor->getGizmo()->on3DMouseDown(e);
+
+   /*if (e.modifier & SI_ALT)
    {
       mCreateMode = true;
 
@@ -251,11 +273,51 @@ bool BrushEditorTool::onMouseDown(const Gui3DMouseEvent &e)
       return;
    }*/
 
-   mWorldEditor->getGizmo()->on3DMouseDown(e);
+   //mWorldEditor->getGizmo()->on3DMouseDown(e);
    return true;
 }
 bool BrushEditorTool::onMouseDragged(const Gui3DMouseEvent &e)
 {
+   if (!mSelectedBrushes.empty() || !mSelectedFaces.empty())
+   {
+      mWorldEditor->getGizmo()->on3DMouseDragged(e);
+
+      Point3F draggedOffset = mWorldEditor->getGizmo()->getTotalOffset();
+
+      Con::printf("Moved a face or brush by: %g %g %g", draggedOffset.x, draggedOffset.y, draggedOffset.z);
+
+      for (U32 i = 0; i < mSelectedBrushes.size(); i++)
+      {
+         BrushObject *clientObj = NULL;
+         if (mSelectedBrushes[i].brushObj->getClientObject())
+            clientObj = static_cast< BrushObject* >(mSelectedBrushes[i].brushObj->getClientObject());
+
+         for (U32 p = 0; p < mSelectedBrushes[i].brushObj->mBrushes[mSelectedBrushes[i].brush].mGeometry.points.size(); p++)
+         {
+            
+            mSelectedBrushes[i].brushObj->mBrushes[mSelectedBrushes[i].brush].mGeometry.points[p] += draggedOffset;
+            
+
+            if (clientObj)
+            {
+               Point3F oldPos = clientObj->mBrushes[mSelectedBrushes[i].brush].mGeometry.points[p];
+               clientObj->mBrushes[mSelectedBrushes[i].brush].mGeometry.points[p] += draggedOffset;
+               Point3F newPos = clientObj->mBrushes[mSelectedBrushes[i].brush].mGeometry.points[p];
+
+               bool tmp = true;
+            }
+         }
+
+         mSelectedBrushes[i].brushObj->updateGeometry();
+
+         if (clientObj)
+         {
+            clientObj->updateGeometry();
+            clientObj->createGeometry();
+         }
+      }
+   }
+
    /*if (mCreateMode)
    {
       if (!mNewConvex || mStage != -1)
@@ -537,6 +599,8 @@ bool BrushEditorTool::onMouseUp(const Gui3DMouseEvent &e)
    mMouseDown = false;
    mCreateMode = false;
 
+   mWorldEditor->getGizmo()->on3DMouseUp(e);
+
    //mHasCopied = false;
    //mHasGeometry = false;
 
@@ -673,21 +737,49 @@ bool BrushEditorTool::onInputEvent(const InputEventInfo &e)
 //
 void BrushEditorTool::render()
 {
+   GFXDrawUtil *drawer = GFX->getDrawUtil();
+   GFXStateBlockDesc desc;
+   desc.setCullMode(GFXCullNone);
+   desc.setFillModeWireframe();
+
    if (mBrushObjHL)
    {
-      GFXDrawUtil *drawer = GFX->getDrawUtil();
-
       //build the bounds
-      Box3F bnds = Box3F::Zero;
-      for (U32 i = 0; i < mBrushObjHL->mBrushes[mBrushHL].mGeometry.points.size(); i++)
-      {
-         bnds.extend(mBrushObjHL->mBrushes[mBrushHL].mGeometry.points[i]);
-      }
+      Box3F bnds = mBrushObjHL->mBrushes[mBrushHL].mBounds;
 
-      GFXStateBlockDesc desc;
-      desc.setCullMode(GFXCullNone);
-      desc.setFillModeWireframe();
-      drawer->drawCube(desc, bnds, ColorI::WHITE);
+      drawer->drawCube(desc, bnds, ColorI::BLUE);
+   }
+
+   Point3F avgPoint = Point3F::Zero;
+   for (U32 i = 0; i < mSelectedBrushes.size(); i++)
+   {
+      //build the bounds
+      Box3F bnds = mSelectedBrushes[i].brushObj->mBrushes[mSelectedBrushes[i].brush].mBounds;
+
+      drawer->drawCube(desc, bnds, ColorI::GREEN);
+
+      avgPoint += bnds.getCenter();
+   }
+
+   if (mSelectedBrushes.size() > 0)
+   {
+      mWorldEditor->getGizmo()->setHidden(false);
+
+      mWorldEditor->getGizmo()->getProfile()->alignment = Object;
+
+      avgPoint /= mSelectedBrushes.size();
+
+      MatrixF objMat(true);
+      Point3F brushPos = mSelectedBrushes[0].brushObj->mBrushes[mSelectedBrushes[0].brush].mBounds.getCenter();
+      objMat.setPosition(brushPos);
+
+      mWorldEditor->getGizmo()->set(objMat, brushPos, Point3F(1, 1, 1));
+
+      mWorldEditor->getGizmo()->renderGizmo(mWorldEditor->getLastCameraQuery().cameraMatrix, mWorldEditor->getLastCameraQuery().fov);
+   }
+   else
+   {
+      mWorldEditor->getGizmo()->setHidden(true);
    }
 }
 
@@ -721,7 +813,7 @@ bool BrushEditorTool::carveAction()
 
 bool BrushEditorTool::addBoxBrush(Box3F newBrushBounds)
 {
-   //only box brush atm. types will be added later
+   /*//only box brush atm. types will be added later
 
    // Face Order:
    // Top, Bottom, Front, Back, Left, Right
@@ -775,6 +867,6 @@ bool BrushEditorTool::addBoxBrush(Box3F newBrushBounds)
       surf.setPosition(cubeNormals[i] * 0.5f);
    }
 
-   //newBrush->addBrushFromSurfaces(surfaces);
+   //newBrush->addBrushFromSurfaces(surfaces);*/
    return true;
 }

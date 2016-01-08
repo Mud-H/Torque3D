@@ -38,8 +38,15 @@ class BrushEditorTool : public EditorTool
    typedef EditorTool Parent;
 
 private:
+   enum SelectMode
+   {
+      Brush=0,
+      Face,
+      Vertex
+   }mSelectionMode;
    struct BrushSelection
    {
+      BrushObject* brushObj;
       U32 brush;
    };
    struct FaceSelection
@@ -52,6 +59,7 @@ private:
       U32 brush;
       U32 vert;
    };
+
    Vector<BrushSelection> mSelectedBrushes;
    Vector<FaceSelection> mSelectedFaces;
    Vector<VertSelection> mVertBrushes;

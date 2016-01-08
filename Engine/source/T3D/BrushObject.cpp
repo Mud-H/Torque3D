@@ -40,6 +40,8 @@
 #include "gfx/primBuilder.h"
 #include "math/mathUtils.h"
 
+#include "util/triRayCheck.h"
+
 IMPLEMENT_CO_NETOBJECT_V1(BrushObject);
 
 ConsoleDocClass(BrushObject,
@@ -589,6 +591,8 @@ void BrushObject::loadBrushFile()
 
          Brush newBrush;
 
+         Point3F center = Point3F::Zero;
+
          while (true)
          {
             Brush::Face face;
@@ -696,6 +700,8 @@ void BrushObject::loadBrushFile()
                      newBrush.mGeometry.points.push_back(vertPos);
                      vertIdx = newBrush.mGeometry.points.size() - 1;
 
+                     center += vertPos;
+
                      face.points.push_back(vertIdx);
                      face.texcoords.push_back(texCoord);
                      if (v==0)
@@ -753,6 +759,16 @@ void BrushObject::loadBrushFile()
          }
 
          reader->popElement();
+
+         //set the bounds of the brush
+         center /= newBrush.mGeometry.points.size();
+
+         newBrush.mBounds.setCenter(center);
+
+         for (U32 i = 0; i < newBrush.mGeometry.points.size(); i++)
+         {
+            newBrush.mBounds.extend(newBrush.mGeometry.points[i]);
+         }
 
          mBrushes.push_back(newBrush);
 
@@ -872,33 +888,29 @@ bool BrushObject::castRay(const Point3F &start, const Point3F &end, RayInfo *inf
    if (mBrushes.empty())
       return false;
 
+   F32 tmin = F32_MAX;
+   S32 bestBrushMatch = -1;
+   S32 bestFaceMatch = -1;
+   Point3F normal;
+
    for (U32 b = 0; b < mBrushes.size(); b++)
    {
+      F32 brushT = F32_MAX;
+      S32 bestBrushFace = -1;
       int faceCount = mBrushes[b].mGeometry.faces.size();
       for (U32 i = 0; i < faceCount; i++)
       {
-         PlaneF &facePlane = mBrushes[b].mGeometry.faces[i].plane;
+         Brush::Face &face = mBrushes[b].mGeometry.faces[i];
+         PlaneF &facePlane = face.plane;
 
          F32 t;
-         F32 tmin = F32_MAX;
          S32 hitFace = -1;
          Point3F hitPnt, pnt;
          VectorF rayDir(end - start);
          rayDir.normalizeSafe();
 
-         if (false)
-         {
-            PlaneF plane(Point3F(0, 0, 0), Point3F(0, 0, 1));
-            Point3F sp(0, 0, -1);
-            Point3F ep(0, 0, 1);
-
-            F32 t = plane.intersect(sp, ep);
-            Point3F hitPnt;
-            hitPnt.interpolate(sp, ep, t);
-         }
-
          // Don't hit the back-side of planes.
-         if (mDot(rayDir, facePlane) >= 0.0f)
+         if (mDot(rayDir, face.normal) >= 0.0f)
             continue;
 
          t = facePlane.intersect(start, end);
@@ -907,77 +919,49 @@ bool BrushObject::castRay(const Point3F &start, const Point3F &end, RayInfo *inf
          {
             pnt.interpolate(start, end, t);
 
-            bool validHit = false;
-            for (U32 tri = 0; tri < mBrushes[b].mGeometry.faces[i].triangles.size(); tri++)
-            {
-               Brush::Triangle &triangle = mBrushes[b].mGeometry.faces[i].triangles[tri];
-               Point3F t0 = mBrushes[b].mGeometry.points[triangle.p0];
-               Point3F t1 = mBrushes[b].mGeometry.points[triangle.p1];
-               Point3F t2 = mBrushes[b].mGeometry.points[triangle.p2];
-               /*if (MathUtils::mLineTriangleCollide(start, end,
-                  t0, t1, t2))
-               {
-                  validHit = true;
-                  break;
-               }*/
+            if (!mBrushes[b].mBounds.isContained(pnt))
+               continue;
 
-               //we have our point, check if it's inside the planar bounds of the line segment
-               VectorF v0 = t2 - t0;
-               VectorF v1 = t1 - t0;
-               VectorF v2 = pnt - t1;
-
-               // Compute dot products
-               F32 dot00 = mDot(v0, v0);
-               F32 dot01 = mDot(v0, v1);
-               F32 dot02 = mDot(v0, v2);
-               F32 dot11 = mDot(v1, v1);
-               F32 dot12 = mDot(v1, v2);
-
-               // Compute barycentric coordinates
-               F32 invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-               F32 u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-               F32 v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-
-               // Check if point is in triangle
-               if ((u >= 0) && (v >= 0) && (u + v < 1))
-               {
-                  validHit = true;
-                  break;
-               }
-            }
-
-            //S32 j = 0;
-           /* for (; j < faceCount; j++)
+            S32 j = 0;
+            for (; j < faceCount; j++)
             {
                if (i == j)
                   continue;
 
-               F32 dist = mBrushes[b].mGeometry.faces[j].plane.distToPlane(pnt);
+               F32 dist = mBrushes[b].mGeometry.faces[i].plane.distToPlane(pnt);
                if (dist > 1.0e-004f)
                   break;
             }
-            */
-            if (validHit)
+
+            if (j == faceCount)
             {
-               tmin = t;
-               hitFace = i;
+               brushT = t;
+               bestBrushFace = i;
+               normal = facePlane;
             }
          }
-
-         if (hitFace == -1)
-            return false;
-
-         info->face = hitFace;
-         info->material = mMaterialInst;
-         info->normal = facePlane;
-         info->object = this;
-         info->t = tmin;
-         info->userData = (void*)b;
-
-         //mObjToWorld.mulV( info->normal );
-
-         return true;
       }
+
+      if (brushT < tmin)
+      {
+         tmin = brushT;
+         bestFaceMatch = bestBrushFace;
+         bestBrushMatch = b;
+      }
+   }
+
+   if (bestBrushMatch != -1 && bestFaceMatch != -1)
+   {
+      Brush::Face &face = mBrushes[bestBrushMatch].mGeometry.faces[bestFaceMatch];
+
+      info->face = bestFaceMatch;
+      info->material = mSurfaceMaterials[face.materialId].mMaterialInst;
+      info->normal = face.normal;
+      info->object = this;
+      info->t = tmin;
+      info->userData = (void*)bestBrushMatch;
+
+      return true;
    }
 
    return false;
@@ -1193,6 +1177,202 @@ void BrushObject::addBrush(Point3F center, const Vector<MatrixF> surfaces, const
    mBrushes.push_back(newBrush);
 }
 
+void BrushObject::subtractBrush(U32 brushIdx)
+{
+   if (brushIdx > mBrushes.size())
+      return;
+
+
+}
+
+void BrushObject::updateGeometry()
+{
+   //if we're on the client, find our buffer data
+   S32 bufferId;
+   U32 BUFFER_SIZE = 65000;
+
+   mBuffers.clear();
+   mPrimCount = 0;
+   mVertCount = 0;
+
+   for (U32 i = 0; i < mSurfaceMaterials.size(); i++)
+   {
+      mBuffers.increment();
+      mBuffers.last().surfaceMaterialId = i;
+   };
+
+   for (U32 i = 0; i < mBrushes.size(); i++)
+   {
+      Point3F center = Point3F::Zero;
+
+      for (U32 f = 0; f < mBrushes[i].mGeometry.faces.size(); f++)
+      {
+         Brush::Face &face = mBrushes[i].mGeometry.faces[f];
+
+         S32 triangleCount = face.triangles.size();
+
+         //see if we have a buffer set for this face's material
+         bufferId = findBufferSetByMaterial(face.uvs.matID);
+
+         //see if this would push us over our buffer size limit, if it is, make a new buffer for this set
+         if (mBuffers[bufferId].buffers.last().vertCount + triangleCount * 3 > BUFFER_SIZE
+            || mBuffers[bufferId].buffers.last().primCount + triangleCount > BUFFER_SIZE)
+         {
+            //yep, we'll overstep with this, so spool up a new buffer in this set
+            BufferSet::Buffers newBuffer = BufferSet::Buffers();
+            mBuffers[bufferId].buffers.push_back(newBuffer);
+            mBuffers[bufferId].buffers.last().vertStart = mVertCount;
+            mBuffers[bufferId].buffers.last().primStart = mPrimCount;
+         }
+
+         mBuffers[bufferId].vertCount += triangleCount * 3;
+         mBuffers[bufferId].primCount += triangleCount;
+         mBuffers[bufferId].buffers.last().vertCount += triangleCount * 3;
+         mBuffers[bufferId].buffers.last().primCount += triangleCount;
+
+         //update the TOTAL prim and vert counts
+         mPrimCount += triangleCount;
+         mVertCount += triangleCount * 3;
+         
+         Point3F avg = Point3F::Zero;
+
+         for (U32 v = 0; v < face.points.size(); v++)
+         {
+            VertexType bufVert;
+            bufVert.normal = face.normal;
+            bufVert.tangent = face.tangent;
+            bufVert.texCoord = face.texcoords[v];
+            bufVert.point = mBrushes[i].mGeometry.points[face.points[v]];
+
+            avg += mBrushes[i].mGeometry.points[face.points[v]];
+            center += mBrushes[i].mGeometry.points[face.points[v]];
+
+            mBuffers[bufferId].buffers.last().vertData.push_back(bufVert);
+            U32 vertPrimId = mBuffers[bufferId].buffers.last().vertData.size() - 1;
+            mBuffers[bufferId].buffers.last().primData.push_back(vertPrimId);
+         }
+
+         avg /= face.points.size();
+
+         PlaneF facePlane = PlaneF(avg, face.normal);
+
+         face.plane = facePlane;
+      }
+
+      mBrushes[i].mBounds = Box3F::Zero;
+      mBrushes[i].mBounds.setCenter(center);
+
+      for (U32 v = 0; v < mBrushes[i].mGeometry.points.size(); v++)
+      {
+         mBrushes[i].mBounds.extend(mBrushes[i].mGeometry.points[v]);
+      }
+   }
+   
+   /*if (!isServerObject())
+   {
+      //see if we have a buffer set for this face's material
+      bufferId = findBufferSetByMaterial(face.uvs.matID);
+
+      //see if this would push us over our buffer size limit, if it is, make a new buffer for this set
+      if (mBuffers[bufferId].buffers.last().vertCount + triangleCount * 3 > BUFFER_SIZE
+         || mBuffers[bufferId].buffers.last().primCount + triangleCount > BUFFER_SIZE)
+      {
+         //yep, we'll overstep with this, so spool up a new buffer in this set
+         BufferSet::Buffers newBuffer = BufferSet::Buffers();
+         mBuffers[bufferId].buffers.push_back(newBuffer);
+         mBuffers[bufferId].buffers.last().vertStart = mVertCount;
+         mBuffers[bufferId].buffers.last().primStart = mPrimCount;
+      }
+
+      mBuffers[bufferId].vertCount += triangleCount * 3;
+      mBuffers[bufferId].primCount += triangleCount;
+      mBuffers[bufferId].buffers.last().vertCount += triangleCount * 3;
+      mBuffers[bufferId].buffers.last().primCount += triangleCount;
+
+      //update the TOTAL prim and vert counts
+      mPrimCount += triangleCount;
+      mVertCount += triangleCount * 3;
+   }
+
+   //lastly do the verts
+   while (true)
+   {
+      bool foundTri = reader->pushFirstChildElement("Triangle");
+
+      Brush::Triangle tri;
+
+      {
+         bool foundVert = reader->pushFirstChildElement("Vert");
+         Point3F vertPos;
+         Point2F texCoord;
+         U32 vertIdx;
+         const char* vertBuffer;
+
+         for (U32 v = 0; v < 3; v++)
+         {
+            vertBuffer = reader->getData();
+
+            dSscanf(vertBuffer, "%g %g %g %g %g",
+               &vertPos.x, &vertPos.y, &vertPos.z, &texCoord.x, &texCoord.y);
+
+            newBrush.mGeometry.points.push_back(vertPos);
+            vertIdx = newBrush.mGeometry.points.size() - 1;
+
+            center += vertPos;
+
+            face.points.push_back(vertIdx);
+            face.texcoords.push_back(texCoord);
+            if (v == 0)
+               tri.p0 = face.points.size() - 1;
+            else if (v == 1)
+               tri.p1 = face.points.size() - 1;
+            else
+               tri.p2 = face.points.size() - 1;
+
+            //if we're on the client, prep our buffer data
+            if (!isServerObject())
+            {
+               VertexType bufVert;
+               bufVert.normal = normal;
+               bufVert.tangent = tangent;
+               bufVert.texCoord = texCoord;
+               bufVert.point = vertPos;
+
+               mBuffers[bufferId].buffers.last().vertData.push_back(bufVert);
+               U32 vertPrimId = mBuffers[bufferId].buffers.last().vertData.size() - 1;
+               mBuffers[bufferId].buffers.last().primData.push_back(vertPrimId);
+            }
+
+            reader->nextSiblingElement("Vert");
+         }
+
+         reader->popElement();
+      }
+
+      face.triangles.push_back(tri);
+
+      if (!reader->nextSiblingElement("Triangle"))
+         break;
+   }
+
+   reader->popElement();
+
+   //build the face's plane
+   Point3F avg = Point3F::Zero;
+   for (U32 p = 0; p < face.points.size(); p++)
+   {
+      avg += newBrush.mGeometry.points[face.points[p]];
+   }
+
+   avg /= face.points.size();
+
+   PlaneF facePlane = PlaneF(avg, normal);
+
+   face.plane = facePlane;
+
+   newBrush.mGeometry.faces.push_back(face);*/
+}
+
 void BrushObject::createGeometry()
 {
    // Server does not need to generate vertex/prim buffers.
@@ -1406,7 +1586,7 @@ void BrushObject::_renderDebug(ObjectRenderInst *ri, SceneRenderState *state, Ba
       }
 
       // Render Edges.
-      if (true)
+      if (false)
       {
          GFXTransformSaver saver;
          //GFXFrustumSaver fsaver;
@@ -1434,16 +1614,16 @@ void BrushObject::_renderDebug(ObjectRenderInst *ri, SceneRenderState *state, Ba
 
                PrimBuild::color(ColorI::WHITE * 0.8f);
 
-               U32 p0 = face.triangles[tri].p0;
-               U32 p1 = face.triangles[tri].p1;
-               U32 p2 = face.triangles[tri].p2;
+               U32 p0 = face.points[face.triangles[tri].p0];
+               U32 p1 = face.points[face.triangles[tri].p1];
+               U32 p2 = face.points[face.triangles[tri].p2];
 
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p0]);
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p1]);
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p1]);
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p2]);
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p2]);
-               PrimBuild::vertex3fv(pointList[face.triangles[tri].p0]);
+               PrimBuild::vertex3fv(pointList[p0]);
+               PrimBuild::vertex3fv(pointList[p1]);
+               PrimBuild::vertex3fv(pointList[p1]);
+               PrimBuild::vertex3fv(pointList[p2]);
+               PrimBuild::vertex3fv(pointList[p2]);
+               PrimBuild::vertex3fv(pointList[p0]);
 
                PrimBuild::end();
             }
@@ -1538,7 +1718,7 @@ void BrushObject::_renderDebug(ObjectRenderInst *ri, SceneRenderState *state, Ba
          */
       }
 
-      // Render surface transforms.
+      // Render face transforms.
       if (false)
       {
          GFXStateBlockDesc desc;
@@ -1618,12 +1798,13 @@ DefineEngineFunction(makeBrushFile, void, (String fileName), ("levels/brushFileT
       {
          for (U32 k = 0; k < size; k++)
          {
-            newBrushObj->addBoxBrush(Point3F(i, j, k));
+            newBrushObj->addBoxBrush(Point3F(i + i, j + j, k + k));
          }
       }
    }*/
 
    newBrushObj->addBoxBrush(Point3F(0,0,0));
+   //newBrushObj->addBoxBrush(Point3F(0.5, 0.5, 0.5));
 
    newBrushObj->mBrushFile = "levels/brushFileTest.brush";
 

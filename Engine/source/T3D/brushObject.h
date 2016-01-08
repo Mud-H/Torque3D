@@ -103,6 +103,16 @@ public:
       U32 materialId;
       FaceUV uvs;
       PlaneF plane;
+
+      Face()
+      {
+         tangent = Point3F::Zero;
+         normal = Point3F::Zero;
+         centroid = Point3F::Zero;
+         area = 0;
+         id = 0;
+         materialId = 0;
+      }
    };
    
    struct Geometry
@@ -288,6 +298,8 @@ public:
    // Create the geometry for rendering
    void createGeometry();
 
+   void updateGeometry();
+
    // Get the Material instance
    void updateMaterials();
 
@@ -304,6 +316,8 @@ public:
 
    void loadBrushFile();
    void saveBrushFile();
+
+   void subtractBrush(U32 brushIdx);
 
    U32 findBufferSetByMaterial(U32 matId)
    {
