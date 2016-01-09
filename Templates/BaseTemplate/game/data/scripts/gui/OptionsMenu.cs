@@ -277,7 +277,7 @@ function CameraMenuOKButton::onClick(%this)
     OptionsMenu.backOut();
 }
 
-function AudioMenuDefaultsButton::onClick(%this)
+function CameraMenuDefaultsButton::onClick(%this)
 {
    
 }
