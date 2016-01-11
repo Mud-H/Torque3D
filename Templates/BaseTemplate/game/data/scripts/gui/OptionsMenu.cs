@@ -144,7 +144,7 @@ function OptionsMenu::backOut(%this)
 
 function OptionsMenu::addSettingOption(%this, %arrayTarget)
 {
-    %graphicsOption = OptionsMenu.tamlReader.read("data/gui/GraphicsMenuSettingsCtrl.taml");
+    %graphicsOption = OptionsMenu.tamlReader.read("data/scripts/gui/graphicsMenuSettingsCtrl.taml");
 
     %arrayTarget.add(%graphicsOption);
 
@@ -153,7 +153,7 @@ function OptionsMenu::addSettingOption(%this, %arrayTarget)
 
 function OptionsMenu::addSliderOption(%this, %arrayTarget, %range, %ticks, %variable, %value, %class)
 {
-    %graphicsOption = OptionsMenu.tamlReader.read("data/gui/GraphicsMenuSettingsSlider.taml");
+    %graphicsOption = OptionsMenu.tamlReader.read("data/scripts/gui/graphicsMenuSettingsSlider.taml");
 
     %arrayTarget.add(%graphicsOption);
     
@@ -277,6 +277,10 @@ function CameraMenuOKButton::onClick(%this)
     OptionsMenu.backOut();
 }
 
+function AudioMenuDefaultsButton::onClick(%this)
+{
+   
+}
 // =============================================================================
 // AUDIO MENU
 // =============================================================================
@@ -410,11 +414,7 @@ function AudioMenu::apply(%this)
 
    if( !isObject( $AudioTestHandle ) )
    {
-      //$AudioTestHandle = sfxPlayOnce( Audio2D, "data/sound/cheetah_engine.ogg" );
-      
-      sfxPlay(TestSound);
-      //$maintheme1=sfxCreateSource(testSound);  
-      //$maintheme1.play();
+      sfxPlay(menuButtonPressed);
    }
 }
 
@@ -425,6 +425,19 @@ function AudioMenuOKButton::onClick(%this)
     OptionsMenu.backOut();
 }
 
+function AudioMenuDefaultsButton::onClick(%this)
+{
+   sfxInit();
+   AudioMenu.loadSettings();
+}
+
+//===
+// BRIGHTNESS MENU
+//===
+function BrightnessMenuDefaultsButton::onClick(%this)
+{
+    BrightnessMenuSlider.setValue(1.1005);
+}
 //
 function OptionsMenuBackSetting::onClick(%this)
 {

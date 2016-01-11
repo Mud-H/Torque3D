@@ -22,11 +22,11 @@
 
 singleton ShaderData( PFX_MotionBlurShader )  
 {     
-   DXVertexShaderFile   = "data/shaders/common/postFx/postFxV.hlsl";  //we use the bare-bones postFxV.hlsl
-   DXPixelShaderFile    = "data/shaders/common/postFx/motionBlurP.hlsl";  //new pixel shader
+   DXVertexShaderFile   = $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";  //we use the bare-bones postFxV.hlsl
+   DXPixelShaderFile    = $Core::CommonShaderPath @ "/postFx/motionBlurP.hlsl";  //new pixel shader
    
-   OGLVertexShaderFile   = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile    = "data/shaders/common/postFx/gl/motionBlurP.glsl";
+   OGLVertexShaderFile   = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile    = $Core::CommonShaderPath @ "/postFx/gl/motionBlurP.glsl";
    
    samplerNames[0] = "$backBuffer";
    samplerNames[1] = "$prepassTex";

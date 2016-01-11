@@ -29,6 +29,8 @@ beginModule( 'physX3' );
    {
       // First look for an environment var.
       $PHYSX3_SDK_PATH = getenv( "TORQUE_PHYSX3_PATH" );
+      $PHYSX3_SDK_PATH = "F:\CodingWorkplace\Physx3.3.2\";
+      
 
       if (strlen($PHYSX3_SDK_PATH) == 0 || !file_exists($PHYSX3_SDK_PATH))
       {

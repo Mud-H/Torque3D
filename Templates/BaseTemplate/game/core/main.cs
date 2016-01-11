@@ -39,7 +39,7 @@
 $Core::MissingTexturePath = "core/images/missingTexture";
 $Core::UnAvailableTexturePath = "core/images/unavailable";
 $Core::WarningTexturePath = "core/images/missingTexture";
-$Core::ShaderPath = "data/shaders";
+$Core::CommonShaderPath = "data/shaders/common";
 
 // We need some of the default GUI profiles in order to get the canvas and
 // other aspects of the GUI system ready.

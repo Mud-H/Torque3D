@@ -271,7 +271,20 @@ function GuiEditCanvas::load( %this, %filename )
    $Con::redefineBehavior = %newRedefineBehavior;
    
    // Load up the gui.
-   exec( %fileName );
+   %fileExt = fileExt(%fileName);
+   if(fileExt(%fileName) $= ".taml")
+   {
+      if(!isObject(%this.tamlReader))
+      {
+         %this.tamlReader = new TAML();  
+      }
+      
+      %guiContent = %this.tamlReader.read(%fileName);
+   }
+   else
+   {
+      exec( %fileName );
+   }
    
    $Con::redefineBehavior = %oldRedefineBehavior;
    
@@ -396,62 +409,75 @@ function GuiEditCanvas::save( %this, %selectedOnly, %noPrompt )
       
    // Save the Gui.
    
+   
    if( isWriteableFileName( %filename ) )
    {
-      //
-      // Extract any existent TorqueScript before writing out to disk
-      //
-      %fileObject = new FileObject();
-      %fileObject.openForRead( %filename );      
-      %skipLines = true;
-      %beforeObject = true;
-      // %var++ does not post-increment %var, in torquescript, it pre-increments it,
-      // because ++%var is illegal. 
-      %lines = -1;
-      %beforeLines = -1;
-      %skipLines = false;
-      while( !%fileObject.isEOF() )
+      if(fileExt(%filename) $= ".taml")
       {
-         %line = %fileObject.readLine();
-         if( %line $= "//--- OBJECT WRITE BEGIN ---" )
-            %skipLines = true;
-         else if( %line $= "//--- OBJECT WRITE END ---" )
+         if(!isObject(%this.tamlReader))
          {
-            %skipLines = false;
-            %beforeObject = false;
+            %this.tamlReader = new TAML();
          }
-         else if( %skipLines == false )
-         {
-            if(%beforeObject)
-               %beforeNewFileLines[ %beforeLines++ ] = %line;
-            else
-               %newFileLines[ %lines++ ] = %line;
-         }
-      }      
-      %fileObject.close();
-      %fileObject.delete();
-     
-      %fo = new FileObject();
-      %fo.openForWrite(%filename);
-      
-      // Write out the captured TorqueScript that was before the object before the object
-      for( %i = 0; %i <= %beforeLines; %i++)
-         %fo.writeLine( %beforeNewFileLines[ %i ] );
          
-      %fo.writeLine("//--- OBJECT WRITE BEGIN ---");
-      %fo.writeObject(%currentObject, "%guiContent = ");
-      %fo.writeLine("//--- OBJECT WRITE END ---");
-      
-      // Write out captured TorqueScript below Gui object
-      for( %i = 0; %i <= %lines; %i++ )
-         %fo.writeLine( %newFileLines[ %i ] );
-               
-      %fo.close();
-      %fo.delete();
-      
-      %currentObject.setFileName( makeRelativePath( %filename, getMainDotCsDir() ) );
-      
-      GuiEditorStatusBar.print( "Saved file '" @ %currentObject.getFileName() @ "'" );
+         %this.tamlReader.write(%currentObject, %filename);
+      }
+      else
+      {
+         //
+         // Extract any existent TorqueScript before writing out to disk
+         //
+         %fileObject = new FileObject();
+         %fileObject.openForRead( %filename );      
+         %skipLines = true;
+         %beforeObject = true;
+         // %var++ does not post-increment %var, in torquescript, it pre-increments it,
+         // because ++%var is illegal. 
+         %lines = -1;
+         %beforeLines = -1;
+         %skipLines = false;
+         while( !%fileObject.isEOF() )
+         {
+            %line = %fileObject.readLine();
+            if( %line $= "//--- OBJECT WRITE BEGIN ---" )
+               %skipLines = true;
+            else if( %line $= "//--- OBJECT WRITE END ---" )
+            {
+               %skipLines = false;
+               %beforeObject = false;
+            }
+            else if( %skipLines == false )
+            {
+               if(%beforeObject)
+                  %beforeNewFileLines[ %beforeLines++ ] = %line;
+               else
+                  %newFileLines[ %lines++ ] = %line;
+            }
+         }      
+         %fileObject.close();
+         %fileObject.delete();
+        
+         %fo = new FileObject();
+         %fo.openForWrite(%filename);
+         
+         // Write out the captured TorqueScript that was before the object before the object
+         for( %i = 0; %i <= %beforeLines; %i++)
+            %fo.writeLine( %beforeNewFileLines[ %i ] );
+            
+         %fo.writeLine("//--- OBJECT WRITE BEGIN ---");
+         %fo.writeObject(%currentObject, "%guiContent = ");
+         %fo.writeLine("//--- OBJECT WRITE END ---");
+         
+         // Write out captured TorqueScript below Gui object
+         for( %i = 0; %i <= %lines; %i++ )
+            %fo.writeLine( %newFileLines[ %i ] );
+                  
+         %fo.close();
+         %fo.delete();
+         
+         %currentObject.setFileName( makeRelativePath( %filename, getMainDotCsDir() ) );
+         
+         GuiEditorStatusBar.print( "Saved file '" @ %currentObject.getFileName() @ "'" );
+      }
    }
    else
       MessageBox( "Error writing to file", "There was an error writing to file '" @ %currentFile @ "'. The file may be read-only.", "Ok", "Error" );   

@@ -26,11 +26,11 @@
  
 new ShaderData( BasicRibbonShader )
 {
-   DXVertexShaderFile   = "data/shaders/common/ribbons/basicRibbonShaderV.hlsl";
-   DXPixelShaderFile    = "data/shaders/common/ribbons/basicRibbonShaderP.hlsl";
+   DXVertexShaderFile   = $Core::CommonShaderPath @ "/ribbons/basicRibbonShaderV.hlsl";
+   DXPixelShaderFile    = $Core::CommonShaderPath @ "/ribbons/basicRibbonShaderP.hlsl";
  
-   OGLVertexShaderFile   = "data/shaders/common/ribbons/gl/basicRibbonShaderV.glsl";
-   OGLPixelShaderFile    = "data/shaders/common/ribbons/gl/basicRibbonShaderP.glsl";
+   OGLVertexShaderFile   = $Core::CommonShaderPath @ "/ribbons/gl/basicRibbonShaderV.glsl";
+   OGLPixelShaderFile    = $Core::CommonShaderPath @ "/ribbons/gl/basicRibbonShaderP.glsl";
  
    samplerNames[0] = "$ribTex";
  
@@ -58,11 +58,11 @@ singleton CustomMaterial( BasicRibbonMat )
  
 new ShaderData( TexturedRibbonShader )
 {
-   DXVertexShaderFile   = "data/shaders/common/ribbons/texRibbonShaderV.hlsl";
-   DXPixelShaderFile    = "data/shaders/common/ribbons/texRibbonShaderP.hlsl";
+   DXVertexShaderFile   = $Core::CommonShaderPath @ "/ribbons/texRibbonShaderV.hlsl";
+   DXPixelShaderFile    = $Core::CommonShaderPath @ "/ribbons/texRibbonShaderP.hlsl";
    
-   OGLVertexShaderFile   = "data/shaders/common/ribbons/gl/texRibbonShaderV.glsl";
-   OGLPixelShaderFile    = "data/shaders/common/ribbons/gl/texRibbonShaderP.glsl";
+   OGLVertexShaderFile   = $Core::CommonShaderPath @ "/ribbons/gl/texRibbonShaderV.glsl";
+   OGLPixelShaderFile    = $Core::CommonShaderPath @ "/ribbons/gl/texRibbonShaderP.glsl";
    
    samplerNames[0] = "$ribTex";
    

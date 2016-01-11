@@ -67,7 +67,7 @@ singleton PostEffect( AL_DepthVisualize )
    shader = AL_DepthVisualizeShader;
    stateBlock = AL_DefaultVisualizeState;
    texture[0] = "#prepass";
-   texture[1] = "depthviz";   
+   texture[1] = "core/lighting/advanced/depthviz";   
    target = "$backBuffer";
    renderPriority = 9999;
 };

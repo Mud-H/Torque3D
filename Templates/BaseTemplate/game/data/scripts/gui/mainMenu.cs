@@ -14,6 +14,7 @@ function MainMenuGui::openSinglePlayerMenu(%this)
    Canvas.pushDialog(ChooseLevelDlg);
    ChooseLevelDlg.returnGui = %this; 
    MainMenuButtonContainer.hidden = true; 
+   MainMenuAppLogo.setBitmap("data/art/gui/Torque-3D-logo");
 }
 
 function MainMenuGui::openMultiPlayerMenu(%this)
@@ -22,6 +23,7 @@ function MainMenuGui::openMultiPlayerMenu(%this)
    Canvas.pushDialog(ChooseLevelDlg);
    ChooseLevelDlg.returnGui = %this; 
    MainMenuButtonContainer.hidden = true; 
+   MainMenuAppLogo.setBitmap("data/art/gui/Torque-3D-logo");
 }
 
 function MainMenuGui::openOptionsMenu(%this)
@@ -29,9 +31,11 @@ function MainMenuGui::openOptionsMenu(%this)
    Canvas.pushDialog(OptionsMenu);
    OptionsMenu.returnGui = %this; 
    MainMenuButtonContainer.hidden = true; 
+   MainMenuAppLogo.setBitmap("data/art/gui/Torque-3D-logo");
 }
 
 function MainMenuGui::onReturnTo(%this)
 {
    MainMenuButtonContainer.hidden = false;
+   MainMenuAppLogo.setBitmap("data/art/gui/Torque-3D-logo-shortcut");
 }

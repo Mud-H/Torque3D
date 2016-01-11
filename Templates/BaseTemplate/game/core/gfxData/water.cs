@@ -28,11 +28,11 @@
 
 singleton ShaderData( WaterShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/water/waterV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/water/waterP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/water/waterV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/water/waterP.hlsl";
    
-   OGLVertexShaderFile = "data/shaders/common/water/gl/waterV.glsl";
-   OGLPixelShaderFile = "data/shaders/common/water/gl/waterP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/water/gl/waterV.glsl";
+   OGLPixelShaderFile = $Core::CommonShaderPath @ "/water/gl/waterP.glsl";
    
    samplerNames[0] = "$bumpMap";  // noise
    samplerNames[1] = "$prepassTex";  // #prepass
@@ -131,11 +131,11 @@ singleton CustomMaterial( UnderwaterMat )
 
 singleton ShaderData( WaterBasicShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/water/waterBasicV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/water/waterBasicP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/water/waterBasicV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/water/waterBasicP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/water/gl/waterBasicV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/water/gl/waterBasicP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/water/gl/waterBasicV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/water/gl/waterBasicP.glsl";
    
    samplerNames[0] = "$bumpMap";
    samplerNames[2] = "$reflectMap";

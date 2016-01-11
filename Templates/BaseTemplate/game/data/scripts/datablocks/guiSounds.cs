@@ -19,14 +19,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
-
-singleton SFXProfile(TestSound)
-{
-   preload = true;
-   fileName = "data/sound/cheetah_engine.ogg";
-   Description = AudioGui;
-};
-
 singleton SFXProfile(menuButtonPressed)
 {
    preload = true;

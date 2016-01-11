@@ -32,11 +32,11 @@ $LightRayPostFX::resolutionScale = 1.0;
 
 singleton ShaderData( LightRayOccludeShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/lightRay/lightRayOccludeP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/lightRay/lightRayOccludeP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/lightRay/gl/lightRayOccludeP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/lightRay/gl/lightRayOccludeP.glsl";
    
    samplerNames[0] = "$backBuffer";
    samplerNames[1] = "$prepassTex";
@@ -46,11 +46,11 @@ singleton ShaderData( LightRayOccludeShader )
 
 singleton ShaderData( LightRayShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/postFxV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/lightRay/lightRayP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/postFxV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/lightRay/lightRayP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/gl/postFxV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/lightRay/gl/lightRayP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/postFxV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/lightRay/gl/lightRayP.glsl";
    
    samplerNames[0] = "$frameSampler";
    samplerNames[1] = "$backBuffer";

@@ -55,11 +55,11 @@ new GFXStateBlockData( AL_VectorLightState )
 // Vector Light Material
 new ShaderData( AL_VectorLightShader )
 {
-   DXVertexShaderFile = "data/shaders/common/lighting/advanced/farFrustumQuadV.hlsl";
-   DXPixelShaderFile  = "data/shaders/common/lighting/advanced/vectorLightP.hlsl";
+   DXVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/farFrustumQuadV.hlsl";
+   DXPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/vectorLightP.hlsl";
 
-   OGLVertexShaderFile = "data/shaders/common/lighting/advanced/gl/farFrustumQuadV.glsl";
-   OGLPixelShaderFile  = "data/shaders/common/lighting/advanced/gl/vectorLightP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/gl/farFrustumQuadV.glsl";
+   OGLPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/gl/vectorLightP.glsl";
    
    samplerNames[0] = "$prePassBuffer";
    samplerNames[1] = "$shadowMap";
@@ -122,11 +122,11 @@ new GFXStateBlockData( AL_ConvexLightState )
 // Point Light Material
 new ShaderData( AL_PointLightShader )
 {
-   DXVertexShaderFile = "data/shaders/common/lighting/advanced/convexGeometryV.hlsl";
-   DXPixelShaderFile  = "data/shaders/common/lighting/advanced/pointLightP.hlsl";
+   DXVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/convexGeometryV.hlsl";
+   DXPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/pointLightP.hlsl";
 
-   OGLVertexShaderFile = "data/shaders/common/lighting/advanced/gl/convexGeometryV.glsl";
-   OGLPixelShaderFile  = "data/shaders/common/lighting/advanced/gl/pointLightP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/gl/convexGeometryV.glsl";
+   OGLPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/gl/pointLightP.glsl";
 
    samplerNames[0] = "$prePassBuffer";
    samplerNames[1] = "$shadowMap";
@@ -155,11 +155,11 @@ new CustomMaterial( AL_PointLightMaterial )
 // Spot Light Material
 new ShaderData( AL_SpotLightShader )
 {
-   DXVertexShaderFile = "data/shaders/common/lighting/advanced/convexGeometryV.hlsl";
-   DXPixelShaderFile  = "data/shaders/common/lighting/advanced/spotLightP.hlsl";
+   DXVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/convexGeometryV.hlsl";
+   DXPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/spotLightP.hlsl";
 
-   OGLVertexShaderFile = "data/shaders/common/lighting/advanced/gl/convexGeometryV.glsl";
-   OGLPixelShaderFile  = "data/shaders/common/lighting/advanced/gl/spotLightP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/gl/convexGeometryV.glsl";
+   OGLPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/gl/spotLightP.glsl";
    
    samplerNames[0] = "$prePassBuffer";
    samplerNames[1] = "$shadowMap";
@@ -226,11 +226,11 @@ new Material( AL_DefaultShadowMaterial )
 // Particle System Point Light Material
 new ShaderData( AL_ParticlePointLightShader )
 {
-   DXVertexShaderFile = "data/shaders/common/lighting/advanced/particlePointLightV.hlsl";
-   DXPixelShaderFile  = "data/shaders/common/lighting/advanced/particlePointLightP.hlsl";
+   DXVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/particlePointLightV.hlsl";
+   DXPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/particlePointLightP.hlsl";
 
-   OGLVertexShaderFile = "data/shaders/common/lighting/advanced/gl/convexGeometryV.glsl";
-   OGLPixelShaderFile  = "data/shaders/common/lighting/advanced/gl/pointLightP.glsl";
+   OGLVertexShaderFile = $Core::CommonShaderPath @ "/lighting/advanced/gl/convexGeometryV.glsl";
+   OGLPixelShaderFile  = $Core::CommonShaderPath @ "/lighting/advanced/gl/pointLightP.glsl";
    
    samplerNames[0] = "$prePassBuffer";   
       

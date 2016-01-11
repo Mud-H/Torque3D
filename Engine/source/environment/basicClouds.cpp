@@ -97,6 +97,7 @@ BasicClouds::BasicClouds()
    mTexOffset[0].set( 0.5f, 0.5f );
    mTexOffset[1].set( 0.5f, 0.5f );
    mTexOffset[2].set( 0.5f, 0.5f );
+   mBehindSkyLine = false;
 }
 
 IMPLEMENT_CO_NETOBJECT_V1( BasicClouds );
@@ -192,6 +193,8 @@ void BasicClouds::initPersistFields()
             "Abstract number which controls the curvature and height of the dome mesh" );
 
       endArray( "Layers" );      
+	  addField("behindSkyLine", TypeBool, Offset(mBehindSkyLine, BasicClouds),
+		  "Set to render clouds behind SkyLine object. Used in conjunction with ScatterSky with a SkyLine");
 
    endGroup( "BasicClouds" );
 
@@ -224,8 +227,9 @@ U32 BasicClouds::packUpdate( NetConnection *conn, U32 mask, BitStream *stream )
       mathWrite( *stream, mTexOffset[i] );
       
       stream->write( mHeight[i] );
+	 
    }
-   
+   stream->writeFlag(mBehindSkyLine);
    return retMask;
 }
 
@@ -246,6 +250,7 @@ void BasicClouds::unpackUpdate( NetConnection *conn, BitStream *stream )
 
       stream->read( &mHeight[i] );
    }
+   mBehindSkyLine = stream->readFlag();
 
    if ( isProperlyAdded() )
    {
@@ -281,8 +286,16 @@ void BasicClouds::prepRenderImage( SceneRenderState *state )
    ObjectRenderInst *ri = state->getRenderPass()->allocInst< ObjectRenderInst >();
    ri->renderDelegate.bind( this, &BasicClouds::renderObject );
    ri->type = RenderPassManager::RIT_Sky;
-   ri->defaultKey = 0;
-   ri->defaultKey2 = 0;
+   if (mBehindSkyLine)
+   {
+	   ri->defaultKey = 10;
+	   ri->defaultKey2 = 2;
+   }
+   else
+   {
+	   ri->defaultKey = 0;
+	   ri->defaultKey2 = 0;
+   }
    state->getRenderPass()->addInst( ri );
 }
 

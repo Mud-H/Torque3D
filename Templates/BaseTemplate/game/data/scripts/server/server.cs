@@ -188,6 +188,7 @@ function onServerCreated()
    %datablockFiles.add( "data/scripts/datablocks/managedParticleEmitterData.cs" );
    %datablockFiles.add( "data/scripts/datablocks/ribbons.cs" );
    %datablockFiles.add( "data/scripts/datablocks/defaultParticle.cs" );
+   %datablockFiles.add( "data/scripts/datablocks/sounds.cs" );
    loadDatablockFiles( %datablockFiles, true );
    
    // Run the other gameplay scripts in this folder

@@ -318,11 +318,11 @@ singleton GFXStateBlockData( PFX_DOFFinalStateBlock )
 
 singleton ShaderData( PFX_DOFDownSampleShader )
 {      
-   DXVertexShaderFile 	= "data/shaders/common/postFx/dof/DOF_DownSample_V.hlsl";   
-   DXPixelShaderFile 	= "data/shaders/common/postFx/dof/DOF_DownSample_P.hlsl";            
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_DownSample_V.hlsl";   
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_DownSample_P.hlsl";            
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/dof/gl/DOF_DownSample_V.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/dof/gl/DOF_DownSample_P.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_DownSample_V.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_DownSample_P.glsl";
    
    samplerNames[0] = "$colorSampler";
    samplerNames[1] = "$depthSampler";
@@ -332,11 +332,11 @@ singleton ShaderData( PFX_DOFDownSampleShader )
 
 singleton ShaderData( PFX_DOFBlurYShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/postFx/dof/DOF_Gausian_V.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/dof/DOF_Gausian_P.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_Gausian_V.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_Gausian_P.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/dof/gl/DOF_Gausian_V.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/dof/gl/DOF_Gausian_P.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_Gausian_V.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_Gausian_P.glsl";
    
    samplerNames[0] = "$diffuseMap";
    
@@ -351,11 +351,11 @@ singleton ShaderData( PFX_DOFBlurXShader : PFX_DOFBlurYShader )
 
 singleton ShaderData( PFX_DOFCalcCoCShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/dof/DOF_CalcCoC_V.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/dof/DOF_CalcCoC_P.hlsl";         
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_CalcCoC_V.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_CalcCoC_P.hlsl";         
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/dof/gl/DOF_CalcCoC_V.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/dof/gl/DOF_CalcCoC_P.glsl"; 
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_CalcCoC_V.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_CalcCoC_P.glsl"; 
 
    samplerNames[0] = "$shrunkSampler";
    samplerNames[1] = "$blurredSampler";
@@ -365,11 +365,11 @@ singleton ShaderData( PFX_DOFCalcCoCShader )
 
 singleton ShaderData( PFX_DOFSmallBlurShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/dof/DOF_SmallBlur_V.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/dof/DOF_SmallBlur_P.hlsl";            
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_SmallBlur_V.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_SmallBlur_P.hlsl";            
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/dof/gl/DOF_SmallBlur_V.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/dof/gl/DOF_SmallBlur_P.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_SmallBlur_V.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_SmallBlur_P.glsl";
 
    samplerNames[0] = "$colorSampler";
    
@@ -378,11 +378,11 @@ singleton ShaderData( PFX_DOFSmallBlurShader )
 
 singleton ShaderData( PFX_DOFFinalShader )
 {   
-   DXVertexShaderFile 	= "data/shaders/common/postFx/dof/DOF_Final_V.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/postFx/dof/DOF_Final_P.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_Final_V.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/postFx/dof/DOF_Final_P.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/postFx/dof/gl/DOF_Final_V.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/postFx/dof/gl/DOF_Final_P.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_Final_V.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/postFx/dof/gl/DOF_Final_P.glsl";
    
    samplerNames[0] = "$colorSampler";
    samplerNames[1] = "$smallBlurSampler";

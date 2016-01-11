@@ -27,11 +27,11 @@
 
 singleton ShaderData( ParticlesShaderData )
 {
-   DXVertexShaderFile     = "data/shaders/common/particlesV.hlsl";
-   DXPixelShaderFile      = "data/shaders/common/particlesP.hlsl";   
+   DXVertexShaderFile     = $Core::CommonShaderPath @ "/particlesV.hlsl";
+   DXPixelShaderFile      = $Core::CommonShaderPath @ "/particlesP.hlsl";   
    
-   OGLVertexShaderFile     = "data/shaders/common/gl/particlesV.glsl";
-   OGLPixelShaderFile      = "data/shaders/common/gl/particlesP.glsl";
+   OGLVertexShaderFile     = $Core::CommonShaderPath @ "/gl/particlesV.glsl";
+   OGLPixelShaderFile      = $Core::CommonShaderPath @ "/gl/particlesP.glsl";
    
    samplerNames[0] = "$diffuseMap";
    samplerNames[1] = "$prepassTex";
@@ -42,11 +42,11 @@ singleton ShaderData( ParticlesShaderData )
 
 singleton ShaderData( OffscreenParticleCompositeShaderData )
 {
-   DXVertexShaderFile     = "data/shaders/common/particleCompositeV.hlsl";
-   DXPixelShaderFile      = "data/shaders/common/particleCompositeP.hlsl";
+   DXVertexShaderFile     = $Core::CommonShaderPath @ "/particleCompositeV.hlsl";
+   DXPixelShaderFile      = $Core::CommonShaderPath @ "/particleCompositeP.hlsl";
    
-   OGLVertexShaderFile     = "data/shaders/common/gl/particleCompositeV.glsl";
-   OGLPixelShaderFile      = "data/shaders/common/gl/particleCompositeP.glsl";
+   OGLVertexShaderFile     = $Core::CommonShaderPath @ "/gl/particleCompositeV.glsl";
+   OGLPixelShaderFile      = $Core::CommonShaderPath @ "/gl/particleCompositeP.glsl";
    
    samplerNames[0] = "$colorSource";
    samplerNames[1] = "$edgeSource";
@@ -59,11 +59,11 @@ singleton ShaderData( OffscreenParticleCompositeShaderData )
 //-----------------------------------------------------------------------------
 new ShaderData( ReflectBump )
 {
-   DXVertexShaderFile 	= "data/shaders/common/planarReflectBumpV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/planarReflectBumpP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/planarReflectBumpV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/planarReflectBumpP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/gl/planarReflectBumpV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/gl/planarReflectBumpP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/gl/planarReflectBumpV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/gl/planarReflectBumpP.glsl";
               
    samplerNames[0] = "$diffuseMap";
    samplerNames[1] = "$refractMap";
@@ -74,11 +74,11 @@ new ShaderData( ReflectBump )
 
 new ShaderData( Reflect )
 {
-   DXVertexShaderFile 	= "data/shaders/common/planarReflectV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/planarReflectP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/planarReflectV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/planarReflectP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/gl/planarReflectV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/gl/planarReflectP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/gl/planarReflectV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/gl/planarReflectP.glsl";
    
    samplerNames[0] = "$diffuseMap";
    samplerNames[1] = "$refractMap";
@@ -91,11 +91,11 @@ new ShaderData( Reflect )
 //-----------------------------------------------------------------------------
 new ShaderData( fxFoliageReplicatorShader )
 {
-   DXVertexShaderFile 	= "data/shaders/common/fxFoliageReplicatorV.hlsl";
-   DXPixelShaderFile 	= "data/shaders/common/fxFoliageReplicatorP.hlsl";
+   DXVertexShaderFile 	= $Core::CommonShaderPath @ "/fxFoliageReplicatorV.hlsl";
+   DXPixelShaderFile 	= $Core::CommonShaderPath @ "/fxFoliageReplicatorP.hlsl";
    
-   OGLVertexShaderFile  = "data/shaders/common/gl/fxFoliageReplicatorV.glsl";
-   OGLPixelShaderFile   = "data/shaders/common/gl/fxFoliageReplicatorP.glsl";
+   OGLVertexShaderFile  = $Core::CommonShaderPath @ "/gl/fxFoliageReplicatorV.glsl";
+   OGLPixelShaderFile   = $Core::CommonShaderPath @ "/gl/fxFoliageReplicatorP.glsl";
 
    samplerNames[0] = "$diffuseMap";
    samplerNames[1] = "$alphaMap";

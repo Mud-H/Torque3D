@@ -20,7 +20,7 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-$GUI::FileSpec = "Torque Gui Files (*.gui)|*.gui|All Files (*.*)|*.*|";
+$GUI::FileSpec = "Torque Gui Files (*.gui)|*.gui|Torque TAML Files (*.taml)|*.taml|All Files (*.*)|*.*|";
 
 /// GuiBuilder::getSaveName - Open a Native File dialog and retrieve the
 ///  location to save the current document.
@@ -60,7 +60,7 @@ function GuiBuilder::getSaveName( %defaultFileName )
    {
       GuiEditor.LastPath = filePath( %dlg.FileName );
       %filename = %dlg.FileName;
-      if( fileExt( %filename ) !$= ".gui" )
+      if( fileExt( %filename ) !$= ".gui" && fileExt( %filename ) !$= ".taml")
          %filename = %filename @ ".gui";
    }
    else
@@ -74,7 +74,12 @@ function GuiBuilder::getSaveName( %defaultFileName )
 function GuiBuilder::getOpenName( %defaultFileName )
 {
    if( %defaultFileName $= "" )
-      %defaultFileName = expandFilename("^game/gui/untitled.gui");
+      %defaultFileName = expandFilename("^data/scripts/gui/untitled.gui");
+      
+   if(GuiEditor.LastPath $= "")
+   {
+      GuiEditor.LastPath = expandFilename("^data/scripts/gui/");
+   }
    
    %dlg = new OpenFileDialog()
    {

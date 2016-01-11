@@ -77,7 +77,8 @@ CloudLayer::CloudLayer()
   mBaseColor( 0.9f, 0.9f, 0.9f, 1.0f ),
   mExposure( 1.0f ),
   mCoverage( 0.5f ),
-  mWindSpeed( 1.0f )
+  mWindSpeed( 1.0f ),
+  mBehindSkyLine(false)
 {
    mTypeMask |= EnvironmentObjectType | StaticObjectType;
    mNetFlags.set(Ghostable | ScopeAlways);
@@ -218,7 +219,8 @@ void CloudLayer::initPersistFields()
 
       addField( "height", TypeF32, Offset( mHeight, CloudLayer ),
          "Abstract number which controls the curvature and height of the dome mesh." );
-
+	  addField("behindSkyLine", TypeBool, Offset(mBehindSkyLine, CloudLayer),
+		  "Set if cloudlayer should be rendered behind SkyLine object. Used in conjunction with ScatterSky with a SkyLine");
    endGroup( "CloudLayer" );
 
    Parent::initPersistFields();
@@ -252,6 +254,7 @@ U32 CloudLayer::packUpdate( NetConnection *conn, U32 mask, BitStream *stream )
    stream->write( mExposure );
    stream->write( mWindSpeed );
    stream->write( mHeight );
+   stream->writeFlag(mBehindSkyLine);
 
    return retMask;
 }
@@ -280,7 +283,7 @@ void CloudLayer::unpackUpdate( NetConnection *conn, BitStream *stream )
 
    F32 oldHeight = mHeight;
    stream->read( &mHeight );
-
+   mBehindSkyLine = stream->readFlag();
    if ( isProperlyAdded() )
    {
       if ( ( oldTextureName != mTextureName ) || ( ( oldCoverage == 0.0f ) != ( mCoverage == 0.0f ) ) )
@@ -321,8 +324,16 @@ void CloudLayer::prepRenderImage( SceneRenderState *state )
    ObjectRenderInst *ri = state->getRenderPass()->allocInst<ObjectRenderInst>();
    ri->renderDelegate.bind( this, &CloudLayer::renderObject );
    ri->type = RenderPassManager::RIT_Sky;
-   ri->defaultKey = 0;
-   ri->defaultKey2 = 0;
+   if (mBehindSkyLine)
+   {
+	   ri->defaultKey = 10;
+	   ri->defaultKey2 = 2;
+   }
+   else
+   {
+	   ri->defaultKey = 0;
+	   ri->defaultKey2 = 0;
+   }
    state->getRenderPass()->addInst( ri );
 }
 
